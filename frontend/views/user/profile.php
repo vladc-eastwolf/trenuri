@@ -7,12 +7,13 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\bootstrap\Modal;
 
+$this->title='Profile';
 ?>
 
 <div class="container">
     <div class="row">
         <div class="col-lg-7 col-md-push-3 ">
-            <h2>User Profile</h2>
+            <h1><?= Html::encode($this->title) . ' '?><small>only you and train administrator can see your profile. </small></h1>
             <hr class="colorgraph">
             <div class="panel panel-default">
                 <div class="panel-body">

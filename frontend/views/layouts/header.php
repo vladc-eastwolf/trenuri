@@ -22,7 +22,7 @@ $this->title = 'Trains';
                 <li><a href="<?= Url::to('/train/my-train') ?>">My Train</a></li>
                 <li><a href="<?= Url::to('@web/site/contact') ?>">Contact</a></li>
                 <?php if (Yii::$app->user->isGuest) { ?>
-                    <li><a href="<?= Url::to('@web/site/signup') ?>">Register</a></li>
+                    <li><a href="<?= Url::to('@web/site/signup') ?>">Sign-up</a></li>
                     <li><a href="<?= Url::to('@web/site/login') ?>">Login</a></li>
                 <?php } else { ?>
                     <li class="dropdown">

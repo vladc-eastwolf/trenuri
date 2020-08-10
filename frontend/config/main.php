@@ -65,8 +65,8 @@ return [
                 'host' => 'smtp.gmail.com',
                 'username' => 'emailuriyii2@gmail.com',
                 'password' => 'Camion12',
-                'port' => '465',
-                'encryption' => 'ssl',
+                'port' => '587',
+                'encryption' => 'tls',
             ],
         ]
     ],

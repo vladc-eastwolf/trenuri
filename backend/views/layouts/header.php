@@ -34,6 +34,7 @@ $this->title = 'Trains Administration';
                             ['label' => 'Composition', 'url' => ['composition/index']],
                             ['label' => 'Composition-History', 'url' => ['composition-history/index']],
                             ['label' => 'Operates', 'url' => ['operates/index']],
+                            ['label' => 'Ticket', 'url' => ['ticket/index']],
 
                         ]
                     ]) ?>

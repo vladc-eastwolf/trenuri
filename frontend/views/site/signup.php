@@ -9,7 +9,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\bootstrap\Modal;
 
-$this->title = 'Signup';
+$this->title = 'Sign-up';
 
 ?>
 

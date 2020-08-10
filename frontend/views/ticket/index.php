@@ -4,19 +4,20 @@
 
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
-
+$this->title='Ticket Details:'
 ?>
 
 <div class="container">
     <div class="row">
         <div class="col-lg-7 col-md-push-3 ">
-            <h2 style="color: #00b1b1">Ticket Details:</h2>
-            <div style="padding-bottom: 30px">
+            <h1 style="color: #00b1b1"><?= Html::encode($this->title) ?></h1>
+            <div style="padding-bottom: 60px">
                 <div style="float: left">
-                    <h4><?php echo $origin ?></h4>
+                    <h4><?php echo '<span style="color: #1b6d85">From: </span>' . $origin ?></h4>
+                    <h4><?= "<span style='color: #1b6d85'>" . 'Plecarea pe data de: ' . "</span>" . $date ?>  </h4>
                 </div>
                 <div style="float: right">
-                    <h4> <?php echo $destination ?></h4>
+                    <h4> <?php echo '<span style="color: #1b6d85">To: </span>' .  $destination ?></h4>
                 </div>
             </div>
             <hr class="colorgraph">

@@ -11,7 +11,7 @@ $this->title = 'My train';
     <div class="row">
         <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
             <?php $form = ActiveForm::begin(); ?>
-            <h2><?= $this->title ?></h2>
+            <h1><?= Html::encode($this->title) . " " ?></h1>
             <hr class="colorgraph">
 
             <div class="form-group">

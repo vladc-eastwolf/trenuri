@@ -96,7 +96,8 @@ use yii\helpers\Url;
                                         'arrival_time' => $trip->arrival_time,
                                         'origin' => $origin,
                                         'destination' => $destination,
-                                        'distance'=>$distance
+                                        'distance'=>$distance,
+                                        'date'=>$date,
                                     ], [
                                         'class' => 'btn btn-primary',
                                         'style' => ['width' => '100px', 'border-radius' => '15px'],

@@ -16,9 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row">
         <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-            <h1><?= Html::encode($this->title) ?></h1>
+            <h1><?= Html::encode($this->title) . " " ?><small>please fill out the following fields to login:</small></h1>
 
-            <p>Please fill out the following fields to login:</p>
             <hr class="colorgraph">
 
             <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>

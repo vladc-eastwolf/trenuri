@@ -5,7 +5,7 @@ $this->title = 'Check-Out';
 
 ?>
 <div style="text-align: center">
-    <h2><?= $this->title ?><small>Please complete all the following fields</small></h2>
+    <h2><?= $this->title ?><small> Please complete all the following fields</small></h2>
 </div>
 <hr class="colorgraph" style="width: 1168px;">
 

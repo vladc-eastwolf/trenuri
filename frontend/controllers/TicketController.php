@@ -36,11 +36,11 @@ class TicketController extends \yii\web\Controller
         return $this->render('details');
     }
 
-    public function actionCheckOut($id,$origin,$destination)
+    public function actionCheckOut($id, $origin, $destination, $date,$price,$fc)
     {
         $model = new Ticket();
-        $model3=Station::findOne(['name'=>$origin]);
-        $model4=Station::findOne(['name'=>$destination]);
+        $model3 = Station::findOne(['name' => $origin]);
+        $model4 = Station::findOne(['name' => $destination]);
 
         if ($model->load(Yii::$app->request->post())) {
             $model2 = User::findOne(['email' => $model->email]);
@@ -51,32 +51,37 @@ class TicketController extends \yii\web\Controller
             }
 
             $model->composition_id = $id;
-            $model->schedule_departure_station_id=$model3->id;
-            $model->schedule_arrival_station_id=$model4->id;
+            $model->departure_station_id = $model3->id;
+            $model->arrival_station_id = $model4->id;
+            $model->journey_date=$date;
+            $model->price=$price;
+            $model->is_first_class=$fc;
 
 
-            if($model->save()){
+            if ($model->save()) {
                 return $this->redirect(['/train/index']);
             }
         }
         return $this->render('check-out', [
             'model' => $model,
-            'model3'=>$model3,
-            'model4'=>$model4,
+            'model3' => $model3,
+            'model4' => $model4,
         ]);
     }
 
-    public function actionIndex($train_id, $operator_id, $departure_time, $arrival_time, $origin, $destination, $distance)
+    public function actionIndex($train_id, $operator_id, $departure_time, $arrival_time, $origin, $destination, $distance, $date)
     {
         $model = Trip::findOne(['train_id' => $train_id, 'departure_time' => $departure_time, 'arrival_time' => $arrival_time]);
         $model2 = Composition::findOne(['train_id' => $train_id]);
         $model3 = new Composition();
         $price = null;
         $price1 = null;
+        $fc=false;
 
         if ($model3->load(Yii::$app->request->post())) {
             //class I Adult
             if ($model3->seat == 1 && $model3->ticket_type == 1 && intval($distance) >= 1 && intval($distance) <= 10) {
+
                 if ($model->train->type == 'IR') {
                     $price = 7;
                 } else if ($model->train->type == 'R') {
@@ -106,12 +111,14 @@ class TicketController extends \yii\web\Controller
                 } else if ($model->train->type == 'R') {
                     $price = 35;
                 }
+                $fc=true;
             } else if ($model3->seat == 1 && $model3->ticket_type == 1 && intval($distance) >= 101 && intval($distance) <= 200) {
                 if ($model->train->type == 'IR') {
                     $price = 100;
                 } else if ($model->train->type == 'R') {
                     $price = 75;
                 }
+
             }
             //class II Adult
             if ($model3->seat == 2 && $model3->ticket_type == 1 && intval($distance) >= 1 && intval($distance) <= 10) {
@@ -234,82 +241,7 @@ class TicketController extends \yii\web\Controller
                     $price = 33.5;
                 }
             }
-            //school kid class I
-            if ($model3->seat == 1 && $model3->ticket_type == 3 && intval($distance) >= 1 && intval($distance) <= 10) {
-                if ($model->train->type == 'IR') {
-                    $price = 3.5;
-                } else if ($model->train->type == 'R') {
-                    $price = 2;
-                }
-            } else if ($model3->seat == 1 && $model3->ticket_type == 3 && intval($distance) >= 11 && intval($distance) <= 20) {
-                if ($model->train->type == 'IR') {
-                    $price = 5;
-                } else if ($model->train->type == 'R') {
-                    $price = 2.5;
-                }
-            } else if ($model3->seat == 1 && $model3->ticket_type == 3 && intval($distance) >= 21 && intval($distance) <= 30) {
-                if ($model->train->type == 'IR') {
-                    $price = 7;
-                } else if ($model->train->type == 'R') {
-                    $price = 3.5;
-                }
-            } else if ($model3->seat == 1 && $model3->ticket_type == 3 && intval($distance) >= 31 && intval($distance) <= 60) {
-                if ($model->train->type == 'IR') {
-                    $price = 14;
-                } else if ($model->train->type == 'R') {
-                    $price = 7.5;
-                }
-            } else if ($model3->seat == 1 && $model3->ticket_type == 3 && intval($distance) >= 61 && intval($distance) <= 100) {
-                if ($model->train->type == 'IR') {
-                    $price = 23;
-                } else if ($model->train->type == 'R') {
-                    $price = 17.5;
-                }
-            } else if ($model3->seat == 1 && $model3->ticket_type == 3 && intval($distance) >= 101 && intval($distance) <= 200) {
-                if ($model->train->type == 'IR') {
-                    $price = 50;
-                } else if ($model->train->type == 'R') {
-                    $price = 37.5;
-                }
-            }
-            //school kid class II
-            if ($model3->seat == 2 && $model3->ticket_type == 3 && intval($distance) >= 1 && intval($distance) <= 10) {
-                if ($model->train->type == 'IR') {
-                    $price = 2;
-                } else if ($model->train->type == 'R') {
-                    $price = 1.5;
-                }
-            } else if ($model3->seat == 2 && $model3->ticket_type == 3 && intval($distance) >= 11 && intval($distance) <= 20) {
-                if ($model->train->type == 'IR') {
-                    $price = 3.5;
-                } else if ($model->train->type == 'R') {
-                    $price = 2;
-                }
-            } else if ($model3->seat == 2 && $model3->ticket_type == 3 && intval($distance) >= 21 && intval($distance) <= 30) {
-                if ($model->train->type == 'IR') {
-                    $price = 5.5;
-                } else if ($model->train->type == 'R') {
-                    $price = 3;
-                }
-            } else if ($model3->seat == 2 && $model3->ticket_type == 3 && intval($distance) >= 31 && intval($distance) <= 60) {
-                if ($model->train->type == 'IR') {
-                    $price = 11.5;
-                } else if ($model->train->type == 'R') {
-                    $price = 5.5;
-                }
-            } else if ($model3->seat == 2 && $model3->ticket_type == 3 && intval($distance) >= 61 && intval($distance) <= 100) {
-                if ($model->train->type == 'IR') {
-                    $price = 17.5;
-                } else if ($model->train->type == 'R') {
-                    $price = 12;
-                }
-            } else if ($model3->seat == 2 && $model3->ticket_type == 3 && intval($distance) >= 101 && intval($distance) <= 200) {
-                if ($model->train->type == 'IR') {
-                    $price = 45.5;
-                } else if ($model->train->type == 'R') {
-                    $price = 33.5;
-                }
-            }
+
             //retired class I
             if ($model3->seat == 1 && $model3->ticket_type == 4 && intval($distance) >= 1 && intval($distance) <= 10) {
                 if ($model->train->type == 'IR') {
@@ -386,7 +318,7 @@ class TicketController extends \yii\web\Controller
                     $price = 33.5;
                 }
             }
-            $price1 = "<span style='float:left'>" . 'Price for your choise: ' . $price . ' lei' . Html::a('Advance', ['check-out', 'id' => $model2->id,'origin'=>$origin,'destination'=>$destination], ['class' => 'btn btn-primary']) . "</span>";
+            $price1 = "<span style='float:left'>" . 'Price for your choice: ' . $price . ' lei' . Html::a('Advance', ['check-out', 'id' => $model2->id, 'origin' => $origin, 'destination' => $destination, 'date' => $date,'price'=>$price,'fc'=>$fc], ['class' => 'btn btn-primary']) . "</span>";
 
 
             return $this->render('index',
@@ -398,6 +330,7 @@ class TicketController extends \yii\web\Controller
                     'destination' => $destination,
                     'price' => $price,
                     'price1' => $price1,
+                    'date' => $date,
 
                 ]);
         }
@@ -411,6 +344,7 @@ class TicketController extends \yii\web\Controller
                 'destination' => $destination,
                 'price' => $price,
                 'price1' => $price1,
+                'date' => $date,
 
             ]);
     }
