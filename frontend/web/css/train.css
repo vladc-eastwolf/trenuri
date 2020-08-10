@@ -1,0 +1,21 @@
+.collapsible {
+    background-color: lightgray;
+    cursor: pointer;
+    padding: 25px;
+    width: auto;
+    border-radius: 20px
+
+}
+
+.active, .collapsible:hover {
+    background-color: lightgray;
+}
+
+.content {
+    width: auto;
+    padding: 20px;
+    background-color: #DCDCDC;
+    display:none;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
