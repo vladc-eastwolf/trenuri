@@ -34,7 +34,10 @@ class Ticket extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'ticket';
+
     }
+
+    public $test1;
 
     /**
      * {@inheritdoc}
@@ -42,10 +45,10 @@ class Ticket extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'composition_id', 'departure_station_id', 'arrival_station_id', 'is_first_class', 'is_second_class'], 'integer'],
+            [['user_id', 'composition_id', 'departure_station_id', 'arrival_station_id', 'is_first_class', 'is_second_class', 'seat_reserved'], 'integer'],
             [['sales_time', 'journey_date'], 'safe'],
             [['price'], 'number'],
-            [['name', 'email', 'seat_reserved'], 'string', 'max' => 45],
+            [['name', 'email','test1'], 'string', 'max' => 45],
             [['composition_id'], 'exist', 'skipOnError' => true, 'targetClass' => Composition::className(), 'targetAttribute' => ['composition_id' => 'id']],
             [['departure_station_id'], 'exist', 'skipOnError' => true, 'targetClass' => Station::className(), 'targetAttribute' => ['departure_station_id' => 'id']],
             [['arrival_station_id'], 'exist', 'skipOnError' => true, 'targetClass' => Station::className(), 'targetAttribute' => ['arrival_station_id' => 'id']],

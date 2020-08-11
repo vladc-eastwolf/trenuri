@@ -13,7 +13,7 @@ $this->title='Profile';
 <div class="container">
     <div class="row">
         <div class="col-lg-7 col-md-push-3 ">
-            <h1><?= Html::encode($this->title) . ' '?><small>only you and train administrator can see your profile. </small></h1>
+            <h1><?= Html::encode($this->title) . ' '?><small style="font-size: 20px"> only you and train administrator can see your profile. </small></h1>
             <hr class="colorgraph">
             <div class="panel panel-default">
                 <div class="panel-body">

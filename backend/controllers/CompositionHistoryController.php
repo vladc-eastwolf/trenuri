@@ -27,6 +27,7 @@ class CompositionHistoryController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'bulk' => ['POST']
                 ],
             ],
         ];

@@ -31,7 +31,7 @@ $this->title = 'Trains';
                         echo Dropdown::widget([
                             'items' => [
                                 ['label' => 'Profile', 'url' => ['user/profile', 'id' => Yii::$app->user->identity->getId()]],
-                                ['label' => 'Tickets', 'url' => ['']],
+                                ['label' => 'Tickets', 'url' => ['ticket/my-ticket']],
                                 ['label' => 'Logout', 'url' => ['/site/logout'], 'linkOptions' => ['data-method' => 'post']],
                             ],
                         ]);

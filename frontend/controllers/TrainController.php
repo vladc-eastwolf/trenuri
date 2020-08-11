@@ -81,37 +81,37 @@ class TrainController extends \yii\web\Controller
                     foreach ($model6[$i] as $interval) {
                         if ((date('D', strtotime($date)) == 'Mon')) {
                             if ($interval->monday == 1) {
-                                $model4[] = Trip::find()->where(['operational_interval_id' => $interval->id])->andWhere(['line_id' => $line->id])->all();
+                                $model4[] = Trip::find()->where(['operational_interval_id' => $interval->id])->andWhere(['line_id' => $line->id])->orderBy(['departure_time'=>SORT_ASC])->all();
                             }
                         }
                         if ((date('D', strtotime($date)) == 'Tue')) {
                             if ($interval->tuesday == 1) {
-                                $model4[] = Trip::find()->where(['operational_interval_id' => $interval->id])->andWhere(['line_id' => $line->id])->all();
+                                $model4[] = Trip::find()->where(['operational_interval_id' => $interval->id])->andWhere(['line_id' => $line->id])->orderBy(['departure_time'=>SORT_ASC])->all();
                             }
                         }
                         if ((date('D', strtotime($date)) == 'Wed')) {
                             if ($interval->wednesday == 1) {
-                                $model4[] = Trip::find()->where(['operational_interval_id' => $interval->id])->andWhere(['line_id' => $line->id])->all();
+                                $model4[] = Trip::find()->where(['operational_interval_id' => $interval->id])->andWhere(['line_id' => $line->id])->orderBy(['departure_time'=>SORT_ASC])->all();
                             }
                         }
                         if ((date('D', strtotime($date)) == 'Thu')) {
                             if ($interval->thursday == 1) {
-                                $model4[] = Trip::find()->where(['operational_interval_id' => $interval->id])->andWhere(['line_id' => $line->id])->all();
+                                $model4[] = Trip::find()->where(['operational_interval_id' => $interval->id])->andWhere(['line_id' => $line->id])->orderBy(['departure_time'=>SORT_ASC])->all();
                             }
                         }
                         if ((date('D', strtotime($date)) == 'Fri')) {
                             if ($interval->friday == 1) {
-                                $model4[] = Trip::find()->where(['operational_interval_id' => $interval->id])->andWhere(['line_id' => $line->id])->all();
+                                $model4[] = Trip::find()->where(['operational_interval_id' => $interval->id])->andWhere(['line_id' => $line->id])->orderBy(['departure_time'=>SORT_ASC])->all();
                             }
                         }
                         if ((date('D', strtotime($date)) == 'Sat')) {
                             if ($interval->saturday == 1) {
-                                $model4[] = Trip::find()->where(['operational_interval_id' => $interval->id])->andWhere(['line_id' => $line->id])->all();
+                                $model4[] = Trip::find()->where(['operational_interval_id' => $interval->id])->andWhere(['line_id' => $line->id])->orderBy(['departure_time'=>SORT_ASC])->all();
                             }
                         }
                         if ((date('D', strtotime($date)) == 'Sun')) {
                             if ($interval->sunday == 1) {
-                                $model4[] = Trip::find()->where(['operational_interval_id' => $interval->id])->andWhere(['line_id' => $line->id])->all();
+                                $model4[] = Trip::find()->where(['operational_interval_id' => $interval->id])->andWhere(['line_id' => $line->id])->orderBy(['departure_time'=>SORT_ASC])->all();
                             }
                         }
                     }

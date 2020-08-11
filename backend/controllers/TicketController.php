@@ -24,6 +24,7 @@ class TicketController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'bulk' => ['POST']
                 ],
             ],
         ];
@@ -106,6 +107,15 @@ class TicketController extends Controller
     {
         $this->findModel($id)->delete();
 
+        return $this->redirect(['index']);
+    }
+
+    public function actionBulk()
+    {
+        $selection = (array)Yii::$app->request->post('selection');
+        foreach ($selection as $id) {
+            $this->findModel($id)->delete();
+        }
         return $this->redirect(['index']);
     }
 

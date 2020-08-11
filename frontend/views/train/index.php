@@ -39,6 +39,7 @@ $this->title = 'Train Routes';
                     'data' => $data,
                     'options' => [
                         'placeholder' => 'To',
+                       
                     ],
                     'size' => 'lg',
                 ])

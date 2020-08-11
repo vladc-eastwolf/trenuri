@@ -15,13 +15,8 @@ $this->title = 'Contact';
 
     <div class="row">
         <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-            <h1><?= Html::encode($this->title) ?></h1>
+            <h1><?= Html::encode($this->title) ?><small style="font-size: 20px"> If you have business inquiries or other questions, please fill out the following form to contact us.</small></h1>
 
-            <p style="text-align: left">
-                If you have business inquiries or other questions, please fill out the following form to contact us.
-                Thank
-                you.
-            </p>
             <hr class="colorgraph">
 
             <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>

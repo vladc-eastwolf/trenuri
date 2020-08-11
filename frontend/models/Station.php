@@ -35,7 +35,10 @@ class Station extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'location_id','origin','destination','date'], 'required'],
+            [['name', 'location_id'], 'required'],
+            ['destination', 'required', 'message' => 'Please choose a destination.'],
+            ['origin', 'required', 'message' => 'Please choose a departure station.'],
+            ['date', 'required', 'message' => 'Please choose when you want to travel.'],
             [['location_id'], 'integer'],
             [['date'],'safe'],
             [['name','origin','destination'], 'string', 'max' => 255],

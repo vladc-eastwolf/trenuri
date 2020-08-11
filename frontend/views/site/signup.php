@@ -18,7 +18,7 @@ $this->title = 'Sign-up';
     <div class="row">
         <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
             <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
-            <h2><?= $this->title ?> <small>It's free and always will be.</small></h2>
+            <h1><?= $this->title ?> <small style="font-size: 20px">It's free and always will be.</small></h1>
             <hr class="colorgraph">
 
             <div class="row">
@@ -50,7 +50,7 @@ $this->title = 'Sign-up';
             <div class="row">
                 <div class="col-xs-4 col-sm-3 col-md-3">
 
-                    <?php $checkbox = $form->field($model, 'iagree')->checkbox(['label' => 'I Agree']) ?>
+                    <?php $checkbox = $form->field($model, 'iagree')->checkbox(['label' => 'I Agree','required'=>true]) ?>
                     <button type="button" class="btn" data-color="info" tabindex="7"><?= $checkbox ?></button>
 
                 </div>

@@ -1,11 +1,13 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <?php
+
 use yii\helpers\Html;
+
 $this->title = 'Check-Out';
 
 ?>
 <div style="text-align: center">
-    <h2><?= $this->title ?><small> Please complete all the following fields</small></h2>
+    <h1><?= $this->title ?><small style="font-size: 20px"> please complete all the following fields:</small></h1>
 </div>
 <hr class="colorgraph" style="width: 1168px;">
 
@@ -15,17 +17,17 @@ $this->title = 'Check-Out';
         <div class="col-75">
 
             <?php $form = \yii\widgets\ActiveForm::begin() ?>
-
+            <?php if (Yii::$app->user->isGuest) { ?>
             <div class="row">
                 <div class="col-50">
-                    <h3>Billing Address</h3>
+                    <h3>Personal Data</h3>
 
-                    <?= $form->field($model, 'name', ['inputOptions' => ['placeholder' => 'Full name', 'class' => 'form-control input-lg']])->textInput(['autofocus' => true, 'style' => 'text-transform:capitalize'])->label(false) ?>
+                    <?= $form->field($model, 'name', ['inputOptions' => ['placeholder' => 'Full Name', 'class' => 'form-control input-lg']])->textInput(['autofocus' => true])->label(false) ?>
 
-                    <?= $form->field($model, 'email', ['inputOptions' => ['placeholder' => 'E-mail', 'class' => 'form-control input-lg']])->label(false) ?>
+                    <?= $form->field($model, 'email', ['inputOptions' => ['placeholder' => 'ex:someone@something.com', 'class' => 'form-control input-lg']])->label(false) ?>
 
                 </div>
-
+                <?php } ?>
                 <div class="col-50">
                     <h3>Payment</h3>
                     <label for="fname">Accepted Cards</label>
@@ -36,7 +38,9 @@ $this->title = 'Check-Out';
                         <i class="fa fa-cc-discover" style="color:orange;"></i>
                     </div>
                     <label for="cname">Name on Card</label>
-                    <input type="text" id="cname" name="cardname" placeholder="John More Doe">
+
+                    <?= $form->field($model, 'test1', ['inputOptions' => ['placeholder' => 'ex: John More Doe', 'class' => 'form-control input-lg']])->textInput(['autofocus' => true])->label(false) ?>
+
                     <label for="ccnum">Credit card number</label>
                     <input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444">
                     <label for="expmonth">Exp Month</label>
@@ -62,7 +66,7 @@ $this->title = 'Check-Out';
 </div>
 <hr class="colorgraph" style="width: 1168px;">
 <div class="form-group">
-    <div class="col-lg-3" style="position: fixed;bottom: 225px; left: 710px">
+    <div class="col-lg-3" style="position: fixed;bottom: 225px; left: 360px">
         <?= Html::submitButton('Submit', ['class' => 'btn btn-primary btn-block btn-lg']) ?>
     </div>
 </div>

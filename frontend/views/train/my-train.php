@@ -15,7 +15,7 @@ $this->title = 'My train';
             <hr class="colorgraph">
 
             <div class="form-group">
-                <?= $form->field($model, 'number',['inputOptions' => ['placeholder' => 'Train Number', 'class' => 'form-control input-lg']])->textInput(['autofocus' => true,'required'=>true])->label(false) ?>
+                <?= $form->field($model, 'number',['inputOptions' => ['placeholder' => 'Train Number', 'class' => 'form-control input-lg']])->textInput(['autofocus' => true])->label(false) ?>
 
             </div>
 

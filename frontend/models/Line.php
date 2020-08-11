@@ -36,6 +36,7 @@ class Line extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'operator_id', 'departure_station_id', 'arrival_station_id'], 'required'],
+            ['number', 'required', 'message' => 'Please enter a valid train number.'],
             [['operator_id', 'departure_station_id', 'arrival_station_id'], 'integer'],
             [['name','number'], 'string', 'max' => 255],
             [['operator_id'], 'exist', 'skipOnError' => true, 'targetClass' => Operator::className(), 'targetAttribute' => ['operator_id' => 'id']],

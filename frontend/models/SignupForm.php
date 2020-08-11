@@ -52,8 +52,7 @@ class SignupForm extends Model
 
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
-
-            ['iagree', 'compare', 'compareValue' => true, 'message' => 'You must agree to the terms and conditions' ],
+            
         ];
     }
 

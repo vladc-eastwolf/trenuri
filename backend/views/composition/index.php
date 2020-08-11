@@ -12,8 +12,8 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?= Html::beginForm(['composition/bulk'], 'post'); ?>
     <div class="composition-index">
-
         <h1><?= Html::encode($this->title) ?></h1>
+
         <div style="padding-bottom: 50px">
             <div style="float:left">
                 <?= Html::a('Create Composition', ['create'], ['class' => 'btn btn-success']) ?>

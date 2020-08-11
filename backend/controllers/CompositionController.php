@@ -119,7 +119,7 @@ class CompositionController extends Controller
 
     public function actionBulk()
     {
-        $selection = [Yii::$app->request->post('selection')];
+        $selection = (array)Yii::$app->request->post('selection');
         foreach ($selection as $id) {
             $this->findModel($id)->delete();
         }

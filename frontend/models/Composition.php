@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "composition".
  *
  * @property int $id
- * @property string|null $code
+ * @property int|null $train_id
  * @property int|null $seats_first_class
  * @property int|null $seats_second_class
  * @property int|null $additional_capacity
@@ -16,9 +16,7 @@ use Yii;
  * @property int|null $operator_id
  * @property string|null $description
  *
- * @property Operator $operator
- * @property CompositionHistory[] $compositionHistories
- * @property Operates[] $operates
+ * @property Ticket[] $tickets
  */
 class Composition extends \yii\db\ActiveRecord
 {
@@ -39,10 +37,9 @@ class Composition extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['seats_first_class', 'seats_second_class', 'additional_capacity', 'operator_id', 'seat','ticket_type'], 'integer'],
+            [['train_id', 'seats_first_class', 'seats_second_class', 'additional_capacity', 'operator_id', 'seat', 'ticket_type'], 'integer'],
             [['update_time'], 'safe'],
-            [['code', 'description'], 'string', 'max' => 45],
-            [['operator_id'], 'exist', 'skipOnError' => true, 'targetClass' => Operator::className(), 'targetAttribute' => ['operator_id' => 'id']],
+            [['description'], 'string', 'max' => 45],
         ];
     }
 
@@ -53,7 +50,7 @@ class Composition extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'code' => 'Code',
+            'train_id' => 'Train ID',
             'seats_first_class' => 'Seats First Class',
             'seats_second_class' => 'Seats Second Class',
             'additional_capacity' => 'Additional Capacity',
@@ -64,32 +61,12 @@ class Composition extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Operator]].
+     * Gets query for [[Tickets]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getOperator()
+    public function getTickets()
     {
-        return $this->hasOne(Operator::className(), ['id' => 'operator_id']);
-    }
-
-    /**
-     * Gets query for [[CompositionHistories]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCompositionHistories()
-    {
-        return $this->hasMany(CompositionHistory::className(), ['composition_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[Operates]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getOperates()
-    {
-        return $this->hasMany(Operates::className(), ['composition_id' => 'id']);
+        return $this->hasMany(Ticket::className(), ['composition_id' => 'id']);
     }
 }

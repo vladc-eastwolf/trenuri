@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row">
         <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-            <h1><?= Html::encode($this->title) . " " ?><small>please fill out the following fields to login:</small></h1>
+            <h1><?= Html::encode($this->title) . " " ?><small style="font-size: 20px">please fill out the following fields to login:</small></h1>
 
             <hr class="colorgraph">
 
