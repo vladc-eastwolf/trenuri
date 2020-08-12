@@ -10,6 +10,7 @@ use frontend\models\Station;
 use Yii;
 use yii\helpers\Html;
 use frontend\models\User;
+use frontend\models\Train;
 
 use yii\filters\AccessControl;
 
@@ -53,13 +54,13 @@ class TicketController extends \yii\web\Controller
         $chistory->operator_id = $composition->operator_id;
         $chistory->save();
 
-        $chistory2=CompositionHistory::findOne(['composition_id'=>$composition->id]);
+        $chistory2 = CompositionHistory::findOne(['composition_id' => $composition->id]);
 
         if (!Yii::$app->user->isGuest) {
             $model2 = User::findOne(['id' => Yii::$app->user->getId()]);
             $model->user_id = Yii::$app->user->getId();
-            $model->email=$model2->email;
-            $model->name=$model2->firstname . " " . $model2->lastname;
+            $model->email = $model2->email;
+            $model->name = $model2->firstname . " " . $model2->lastname;
         }
 
         if ($model->load(Yii::$app->request->post())) {
@@ -75,23 +76,29 @@ class TicketController extends \yii\web\Controller
 
             if ($model->is_first_class) {
                 for ($i = $composition->seats_first_class; $i >= 1; $i--) {
-                    $model->seat_reserved = $i;
+                    $model->seat_reserved = $chistory2->seats_first_class - $i + 1;
                     $composition->seats_first_class--;
                     $composition->save();
                     break;
                 }
             } else if ($model->is_second_class) {
                 for ($i = $composition->seats_second_class; $i > $chistory2->seats_second_class - $composition->seats_first_class; $i--) {
-                    $model->seat_reserved = $i;
+                    $model->seat_reserved = $chistory2->seats_second_class - $i + ($chistory2->seats_second_class - $composition->seats_first_class);
                     $composition->seats_second_class--;
                     $composition->save();
                     break;
                 }
             }
-
+            $model->save();
+            $ticket = Ticket::findOne(['id' => $model->id]);
+            $id = $model->id;
             if ($model->save() && !(Yii::$app->user->isGuest)) {
-                return $this->redirect(['ticket/my-ticket']);
-            }else if ($model->save() && (Yii::$app->user->isGuest)){
+                return $this->redirect(['my-ticket',
+
+                    'id' => $id
+
+                ]);
+            } else if ($model->save() && (Yii::$app->user->isGuest)) {
                 return $this->redirect(['train/index']);
             }
         }
@@ -102,9 +109,10 @@ class TicketController extends \yii\web\Controller
         ]);
     }
 
-    public function actionMyTicket()
+    public function actionMyTicket($id)
     {
-        return $this->render('my-ticket');
+        $ticket=Ticket::findOne(['id'=>$id]);
+        return $this->render('my-ticket', ['ticket' => $ticket]);
     }
 
     public function actionIndex($train_id, $operator_id, $departure_time, $arrival_time, $origin, $destination, $distance, $date)

@@ -63,13 +63,14 @@ $this->title = 'Check-Out';
 
         </div>
     </div>
-</div>
-<hr class="colorgraph" style="width: 1168px;">
-<div class="form-group">
-    <div class="col-lg-3" style="position: fixed;bottom: 225px; left: 360px">
-        <?= Html::submitButton('Submit', ['class' => 'btn btn-primary btn-block btn-lg']) ?>
+    <hr class="colorgraph" style="width: 1168px;">
+    <div class="form-group">
+        <div class="col-lg-3" style="position: absolute; top:105%; left:10.5%">
+            <?= Html::submitButton('Submit', ['class' => 'btn btn-primary btn-block btn-lg']) ?>
+        </div>
     </div>
 </div>
+
 
 <?php $form = \yii\widgets\ActiveForm::end() ?>
 <style>

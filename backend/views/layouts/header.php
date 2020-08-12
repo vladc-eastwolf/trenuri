@@ -39,6 +39,18 @@ $this->title = 'Trains Administration';
                         ]
                     ]) ?>
                 </li>
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="font-family: Arial">Administration<b
+                                    class="caret"></b></a>
+                        <?php
+                        echo Dropdown::widget([
+                            'items' => [
+                                ['label' => 'Mails', 'url' => ['']],
+
+
+                            ]
+                        ]) ?>
+                    </li>
                 <?php } ?>
                 <?php if (Yii::$app->user->isGuest) { ?>
                     <li><a href="<?= Url::to('@web/site/login') ?>">Login</a></li>
