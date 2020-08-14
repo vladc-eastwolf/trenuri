@@ -1,9 +1,13 @@
 <!-- Navigation -->
-<?php use yii\helpers\Url; ?>
-<?php use yii\helpers\Html; ?>
-<?php use yii\bootstrap\Dropdown; ?>
+<?php
+use yii\helpers\Url;
+ use yii\helpers\Html;
+ use yii\bootstrap\Dropdown;
+ use frontend\models\Ticket;
+ ?>
 <?php
 $this->title = 'Trains';
+
 ?>
 <nav class="navbar navbar-default">
     <div class="container-fluid">
@@ -31,7 +35,7 @@ $this->title = 'Trains';
                         echo Dropdown::widget([
                             'items' => [
                                 ['label' => 'Profile', 'url' => ['user/profile', 'id' => Yii::$app->user->identity->getId()]],
-                                ['label' => 'Tickets', 'url' => ['ticket/my-ticket']],
+                                ['label' => 'Tickets', 'url' => ['ticket/my-ticket-list','user_id'=>Yii::$app->user->identity->getId()]],
                                 ['label' => 'Logout', 'url' => ['/site/logout'], 'linkOptions' => ['data-method' => 'post']],
                             ],
                         ]);

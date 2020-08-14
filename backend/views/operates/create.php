@@ -32,17 +32,23 @@ $this->params['breadcrumbs'][] = $this->title;
             'data-toggle' => 'modal',
             'data-target' => '#your-modal',
         ])) ?>
-    <?= $form->field($model, 'date_from')->widget(DatePicker::className(),[
-        'options' => ['placeholder' => 'Date From'],
+    <?= $form->field($model, 'date_from')->widget(\kartik\datetime\DateTimePicker::className(),[
+        'options' => ['placeholder' => 'Select when starts to operate'],
+        'layout' => '{picker}{input}{remove}',
         'pluginOptions' => [
-            'autoclose'=>true
+            'autoclose' => true,
+            'format' => 'yyyy-mm-dd HH:ii',
+            'minuteStep' => 1,
         ]
     ]) ?>
 
-    <?= $form->field($model, 'date_to')->widget(DatePicker::className(),[
-        'options' => ['placeholder' => 'Date To'],
+    <?= $form->field($model, 'date_to')->widget(\kartik\datetime\DateTimePicker::className(),[
+        'options' => ['placeholder' => 'Select when stops to operate'],
+        'layout' => '{picker}{input}{remove}',
         'pluginOptions' => [
-            'autoclose'=>true
+            'autoclose'=>true,
+            'format' => 'yyyy-mm-dd HH:ii',
+            'minuteStep' => 1,
         ]
     ]) ?>
 

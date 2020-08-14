@@ -11,6 +11,8 @@ use Yii;
 use yii\helpers\Html;
 use frontend\models\User;
 use frontend\models\Train;
+use kartik\mpdf;
+use kartik\mpdf\Pdf;
 
 use yii\filters\AccessControl;
 
@@ -37,8 +39,45 @@ class TicketController extends \yii\web\Controller
     {
         return $this->render('details');
     }
+    public function actionMyTicketList($user_id)
+    {
+        $tickets=Ticket::findAll(['user_id'=>$user_id]);
 
-    public function actionCheckOut($id, $origin, $destination, $date, $price, $fc, $sc, $train_id)
+        return $this->render('my-ticket-list',['tickets'=>$tickets]);
+    }
+
+    public function actionMyTicket($id)
+    {
+        $ticket = Ticket::findOne(['id' => $id]);
+
+        return $this->render('my-ticket', [
+            'ticket' => $ticket,
+        ]);
+    }
+
+    public function actionGenPdf($id)
+    {
+        $ticket = Ticket::findOne(['id' => $id]);
+        $pdf_content = $this->renderPartial('gen-pdf', [
+            'ticket' => $ticket,
+        ]);
+        $mpdf = new mpdf\Pdf([
+            'mode' => Pdf::MODE_CORE,
+            'format' => Pdf::FORMAT_A4,
+            'orientation' => Pdf::ORIENT_PORTRAIT,
+            'destination' => Pdf::DEST_BROWSER,
+            'content' => $pdf_content,
+            'options' => ['title' => 'This is title test'],
+            'methods' => [
+                'SetHeader' => ['Ticket for: ' . $ticket->name . '       ' . $ticket->journey_date],
+                'SetFooter' => ['©  all the right reserved to: Trains']
+            ]
+        ]);
+        return $mpdf->render();
+
+    }
+
+    public function actionCheckOut($id, $origin, $destination, $date, $price, $fc, $sc, $train_id, $departure_time, $arrival_time, $distance)
     {
         $model = new Ticket();
         $model3 = Station::findOne(['name' => $origin]);
@@ -68,6 +107,9 @@ class TicketController extends \yii\web\Controller
             $model->composition_id = $id;
             $model->departure_station_id = $model3->id;
             $model->arrival_station_id = $model4->id;
+            $model->departure_time=$departure_time;
+            $model->arrival_time=$arrival_time;
+            $model->distance=$distance;
             $model->journey_date = $date;
             $model->price = $price;
             $model->is_first_class = $fc;
@@ -94,12 +136,16 @@ class TicketController extends \yii\web\Controller
             $id = $model->id;
             if ($model->save() && !(Yii::$app->user->isGuest)) {
                 return $this->redirect(['my-ticket',
-
-                    'id' => $id
-
+                    'id' => $id,
                 ]);
             } else if ($model->save() && (Yii::$app->user->isGuest)) {
-                return $this->redirect(['train/index']);
+                $model->sendTicket();
+                return $this->redirect(['gen-pdf',
+                    'id' => $id,
+                    'departure_time' => $departure_time,
+                    'arrival_time' => $arrival_time,
+                    'distance' => $distance
+                ]);
             }
         }
         return $this->render('check-out', [
@@ -109,15 +155,10 @@ class TicketController extends \yii\web\Controller
         ]);
     }
 
-    public function actionMyTicket($id)
-    {
-        $ticket=Ticket::findOne(['id'=>$id]);
-        return $this->render('my-ticket', ['ticket' => $ticket]);
-    }
 
     public function actionIndex($train_id, $operator_id, $departure_time, $arrival_time, $origin, $destination, $distance, $date)
     {
-        $model = Trip::findOne(['train_id' => $train_id, 'departure_time' => $departure_time, 'arrival_time' => $arrival_time]);
+        $trip = Trip::findOne(['train_id' => $train_id, 'departure_time' => $departure_time, 'arrival_time' => $arrival_time]);
         $model2 = Composition::findOne(['train_id' => $train_id]);
         $model3 = new Composition();
         $price = null;
@@ -132,39 +173,39 @@ class TicketController extends \yii\web\Controller
                 if ($model3->seat == 1) {
                     $fc = true;
                     if (intval($distance) >= 1 && intval($distance) <= 10) {
-                        if ($model->train->type == 'IR') {
+                        if ($trip->train->type == 'IR') {
                             $price = 7;
-                        } else if ($model->train->type == 'R') {
+                        } else if ($trip->train->type == 'R') {
                             $price = 4;
                         }
                     } else if (intval($distance) >= 11 && intval($distance) <= 20) {
-                        if ($model->train->type == 'IR') {
+                        if ($trip->train->type == 'IR') {
                             $price = 10;
-                        } else if ($model->train->type == 'R') {
+                        } else if ($trip->train->type == 'R') {
                             $price = 5;
                         }
                     } else if (intval($distance) >= 21 && intval($distance) <= 30) {
-                        if ($model->train->type == 'IR') {
+                        if ($trip->train->type == 'IR') {
                             $price = 14;
-                        } else if ($model->train->type == 'R') {
+                        } else if ($trip->train->type == 'R') {
                             $price = 7;
                         }
                     } else if (intval($distance) >= 31 && intval($distance) <= 60) {
-                        if ($model->train->type == 'IR') {
+                        if ($trip->train->type == 'IR') {
                             $price = 28;
-                        } else if ($model->train->type == 'R') {
+                        } else if ($trip->train->type == 'R') {
                             $price = 15;
                         }
                     } else if (intval($distance) >= 61 && intval($distance) <= 100) {
-                        if ($model->train->type == 'IR') {
+                        if ($trip->train->type == 'IR') {
                             $price = 46;
-                        } else if ($model->train->type == 'R') {
+                        } else if ($trip->train->type == 'R') {
                             $price = 35;
                         }
                     } else if (intval($distance) >= 101 && intval($distance) <= 200) {
-                        if ($model->train->type == 'IR') {
+                        if ($trip->train->type == 'IR') {
                             $price = 100;
-                        } else if ($model->train->type == 'R') {
+                        } else if ($trip->train->type == 'R') {
                             $price = 75;
                         }
                     }
@@ -172,39 +213,39 @@ class TicketController extends \yii\web\Controller
                 } else if ($model3->seat == 2) {
                     $sc = true;
                     if (intval($distance) >= 1 && intval($distance) <= 10) {
-                        if ($model->train->type == 'IR') {
+                        if ($trip->train->type == 'IR') {
                             $price = 4;
-                        } else if ($model->train->type == 'R') {
+                        } else if ($trip->train->type == 'R') {
                             $price = 3;
                         }
                     } else if (intval($distance) >= 11 && intval($distance) <= 20) {
-                        if ($model->train->type == 'IR') {
+                        if ($trip->train->type == 'IR') {
                             $price = 7;
-                        } else if ($model->train->type == 'R') {
+                        } else if ($trip->train->type == 'R') {
                             $price = 4;
                         }
                     } else if (intval($distance) >= 21 && intval($distance) <= 30) {
-                        if ($model->train->type == 'IR') {
+                        if ($trip->train->type == 'IR') {
                             $price = 11;
-                        } else if ($model->train->type == 'R') {
+                        } else if ($trip->train->type == 'R') {
                             $price = 6;
                         }
                     } else if (intval($distance) >= 31 && intval($distance) <= 60) {
-                        if ($model->train->type == 'IR') {
+                        if ($trip->train->type == 'IR') {
                             $price = 23;
-                        } else if ($model->train->type == 'R') {
+                        } else if ($trip->train->type == 'R') {
                             $price = 11;
                         }
                     } else if (intval($distance) >= 61 && intval($distance) <= 100) {
-                        if ($model->train->type == 'IR') {
+                        if ($trip->train->type == 'IR') {
                             $price = 35;
-                        } else if ($model->train->type == 'R') {
+                        } else if ($trip->train->type == 'R') {
                             $price = 24;
                         }
                     } else if (intval($distance) >= 101 && intval($distance) <= 200) {
-                        if ($model->train->type == 'IR') {
+                        if ($trip->train->type == 'IR') {
                             $price = 91;
-                        } else if ($model->train->type == 'R') {
+                        } else if ($trip->train->type == 'R') {
                             $price = 67;
                         }
                     }
@@ -228,39 +269,39 @@ class TicketController extends \yii\web\Controller
                 if ($model3->seat == 1) {
                     $fc = true;
                     if (intval($distance) >= 1 && intval($distance) <= 10) {
-                        if ($model->train->type == 'IR') {
+                        if ($trip->train->type == 'IR') {
                             $price = 3.5;
-                        } else if ($model->train->type == 'R') {
+                        } else if ($trip->train->type == 'R') {
                             $price = 2;
                         }
                     } else if (intval($distance) >= 11 && intval($distance) <= 20) {
-                        if ($model->train->type == 'IR') {
+                        if ($trip->train->type == 'IR') {
                             $price = 5;
-                        } else if ($model->train->type == 'R') {
+                        } else if ($trip->train->type == 'R') {
                             $price = 2.5;
                         }
                     } else if (intval($distance) >= 21 && intval($distance) <= 30) {
-                        if ($model->train->type == 'IR') {
+                        if ($trip->train->type == 'IR') {
                             $price = 7;
-                        } else if ($model->train->type == 'R') {
+                        } else if ($trip->train->type == 'R') {
                             $price = 3.5;
                         }
                     } else if (intval($distance) >= 31 && intval($distance) <= 60) {
-                        if ($model->train->type == 'IR') {
+                        if ($trip->train->type == 'IR') {
                             $price = 14;
-                        } else if ($model->train->type == 'R') {
+                        } else if ($trip->train->type == 'R') {
                             $price = 7.5;
                         }
                     } else if (intval($distance) >= 61 && intval($distance) <= 100) {
-                        if ($model->train->type == 'IR') {
+                        if ($trip->train->type == 'IR') {
                             $price = 23;
-                        } else if ($model->train->type == 'R') {
+                        } else if ($trip->train->type == 'R') {
                             $price = 17.5;
                         }
                     } else if (intval($distance) >= 101 && intval($distance) <= 200) {
-                        if ($model->train->type == 'IR') {
+                        if ($trip->train->type == 'IR') {
                             $price = 50;
-                        } else if ($model->train->type == 'R') {
+                        } else if ($trip->train->type == 'R') {
                             $price = 37.5;
                         }
                     }
@@ -268,39 +309,39 @@ class TicketController extends \yii\web\Controller
                 } else if ($model3->seat == 2) {
                     $sc = true;
                     if (intval($distance) >= 1 && intval($distance) <= 10) {
-                        if ($model->train->type == 'IR') {
+                        if ($trip->train->type == 'IR') {
                             $price = 2;
-                        } else if ($model->train->type == 'R') {
+                        } else if ($trip->train->type == 'R') {
                             $price = 1.5;
                         }
                     } else if (intval($distance) >= 11 && intval($distance) <= 20) {
-                        if ($model->train->type == 'IR') {
+                        if ($trip->train->type == 'IR') {
                             $price = 3.5;
-                        } else if ($model->train->type == 'R') {
+                        } else if ($trip->train->type == 'R') {
                             $price = 2;
                         }
                     } else if (intval($distance) >= 21 && intval($distance) <= 30) {
-                        if ($model->train->type == 'IR') {
+                        if ($trip->train->type == 'IR') {
                             $price = 5.5;
-                        } else if ($model->train->type == 'R') {
+                        } else if ($trip->train->type == 'R') {
                             $price = 3;
                         }
                     } else if (intval($distance) >= 31 && intval($distance) <= 60) {
-                        if ($model->train->type == 'IR') {
+                        if ($trip->train->type == 'IR') {
                             $price = 11.5;
-                        } else if ($model->train->type == 'R') {
+                        } else if ($trip->train->type == 'R') {
                             $price = 5.5;
                         }
                     } else if (intval($distance) >= 61 && intval($distance) <= 100) {
-                        if ($model->train->type == 'IR') {
+                        if ($trip->train->type == 'IR') {
                             $price = 17.5;
-                        } else if ($model->train->type == 'R') {
+                        } else if ($trip->train->type == 'R') {
                             $price = 12;
                         }
                     } else if (intval($distance) >= 101 && intval($distance) <= 200) {
-                        if ($model->train->type == 'IR') {
+                        if ($trip->train->type == 'IR') {
                             $price = 45.5;
-                        } else if ($model->train->type == 'R') {
+                        } else if ($trip->train->type == 'R') {
                             $price = 33.5;
                         }
                     }
@@ -312,16 +353,21 @@ class TicketController extends \yii\web\Controller
                     'id' => $model2->id,
                     'origin' => $origin,
                     'destination' => $destination,
-                    'date' => $date, 'price' => $price,
+                    'date' => $date,
+                    'price' => $price,
                     'fc' => $fc,
                     'sc' => $sc,
-                    'train_id' => $train_id
+                    'train_id' => $train_id,
+                    'departure_time' => $departure_time,
+                    'arrival_time' => $arrival_time,
+                    'distance' => $distance
+
                 ], ['class' => 'btn btn-primary']) . "</span>";
 
 
             return $this->render('index',
                 [
-                    'model' => $model,
+                    'model' => $trip,
                     'model2' => $model2,
                     'model3' => $model3,
                     'origin' => $origin,
@@ -335,7 +381,7 @@ class TicketController extends \yii\web\Controller
 
         return $this->render('index',
             [
-                'model' => $model,
+                'model' => $trip,
                 'model2' => $model2,
                 'model3' => $model3,
                 'origin' => $origin,

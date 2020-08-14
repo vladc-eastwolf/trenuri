@@ -64,7 +64,6 @@ class SignupForm extends Model
         }
 
         $user = new User();
-//        $user->username = $this->username;
         $user->email = $this->email;
         $user->firstname = $this->firstname;
         $user->lastname = $this->lastname;

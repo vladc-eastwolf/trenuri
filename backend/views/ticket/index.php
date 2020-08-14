@@ -83,6 +83,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         return $model->arrivalStation->name;
                     }
                 ],
+                ['attribute'=>'departure_time'],
+                ['attribute'=>'arrival_time'],
+                ['attribute'=>'distance'],
                 [
                     'attribute' => 'is_first_class',
                     'label' => 'First Class'

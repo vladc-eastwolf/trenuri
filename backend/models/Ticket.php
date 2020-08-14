@@ -1,8 +1,9 @@
 <?php
 
 namespace backend\models;
-use common\models\User;
+
 use Yii;
+use common\models\User;
 
 /**
  * This is the model class for table "ticket".
@@ -16,6 +17,9 @@ use Yii;
  * @property string|null $journey_date
  * @property int|null $departure_station_id
  * @property int|null $arrival_station_id
+ * @property string|null $departure_time
+ * @property string|null $arrival_time
+ * @property float|null $distance
  * @property int|null $is_first_class
  * @property int|null $is_second_class
  * @property string|null $seat_reserved
@@ -43,8 +47,8 @@ class Ticket extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'composition_id', 'departure_station_id', 'arrival_station_id', 'is_first_class', 'is_second_class'], 'integer'],
-            [['sales_time', 'journey_date'], 'safe'],
-            [['price'], 'number'],
+            [['sales_time', 'journey_date', 'departure_time', 'arrival_time'], 'safe'],
+            [['distance', 'price'], 'number'],
             [['name', 'email', 'seat_reserved'], 'string', 'max' => 45],
             [['composition_id'], 'exist', 'skipOnError' => true, 'targetClass' => Composition::className(), 'targetAttribute' => ['composition_id' => 'id']],
             [['departure_station_id'], 'exist', 'skipOnError' => true, 'targetClass' => Station::className(), 'targetAttribute' => ['departure_station_id' => 'id']],
@@ -68,6 +72,9 @@ class Ticket extends \yii\db\ActiveRecord
             'journey_date' => 'Journey Date',
             'departure_station_id' => 'Departure Station ID',
             'arrival_station_id' => 'Arrival Station ID',
+            'departure_time' => 'Departure Time',
+            'arrival_time' => 'Arrival Time',
+            'distance' => 'Distance',
             'is_first_class' => 'Is First Class',
             'is_second_class' => 'Is Second Class',
             'seat_reserved' => 'Seat Reserved',

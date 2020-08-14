@@ -2,6 +2,7 @@
 
 namespace frontend\models;
 
+use backend\models\Train;
 use Yii;
 
 /**
@@ -68,5 +69,10 @@ class Composition extends \yii\db\ActiveRecord
     public function getTickets()
     {
         return $this->hasMany(Ticket::className(), ['composition_id' => 'id']);
+    }
+
+    public function getTrain()
+    {
+        return $this->hasOne(Train::className(), ['id' => 'train_id']);
     }
 }
