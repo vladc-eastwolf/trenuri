@@ -15,7 +15,7 @@ $this->title = 'Contact';
 
     <div class="row">
         <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-            <h1><?= Html::encode($this->title) ?><small style="font-size: 20px"> If you have business inquiries or other questions, please fill out the following form to contact us.</small></h1>
+            <h1><?= Html::encode($this->title) . " " ?><small style="font-size: 20px"> if you have business inquiries or other questions, please fill out the following form to contact us.</small></h1>
 
             <hr class="colorgraph">
 
@@ -31,7 +31,7 @@ $this->title = 'Contact';
 
             </div>
             <div class="form-group">
-                <?= $form->field($model, 'subject', ['inputOptions' => ['placeholder' => 'Phone', 'class' => 'form-control input-lg']])->label(false) ?>
+                <?= $form->field($model, 'subject', ['inputOptions' => ['placeholder' => 'Subject', 'class' => 'form-control input-lg']])->label(false) ?>
 
             </div>
             <div class="form-group">

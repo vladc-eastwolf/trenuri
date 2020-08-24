@@ -1,14 +1,16 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $name string */
 /* @var $message string */
+
 
 /* @var $exception Exception */
 
 use yii\helpers\Html;
 
-$this->title = $name;
+$this->title = 'Error';
+$message = 'You are not allowed to perform this action.'
+
 ?>
 <div class="container">
     <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
@@ -20,7 +22,7 @@ $this->title = $name;
         </div>
 
         <p>
-            The above error occurred while the Web server was processing your request.
+            There is no ticket with this ID.
         </p>
         <p>
             Please contact us if you think this is a server error. Thank you.

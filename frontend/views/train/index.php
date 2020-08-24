@@ -12,11 +12,28 @@ use kartik\date\DatePicker;
 $this->title = 'Train Routes';
 ?>
 
-
 <div class="container">
 
     <div class="row">
         <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+
+            <?php if (Yii::$app->session->hasFlash('success')): ?>
+                <div class="alert alert-success alert-dismissable">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                    <h4><i class="icon fa fa-check"></i>Saved!</h4>
+                    <?= Yii::$app->session->getFlash('success') ?>
+                </div>
+            <?php endif; ?>
+
+
+            <?php if (Yii::$app->session->hasFlash('error')): ?>
+                <div class="alert alert-danger alert-dismissable">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                    <h4><i class="icon fa fa-check"></i>Error!</h4>
+                    <?= Yii::$app->session->getFlash('error') ?>
+                </div>
+            <?php endif; ?>
+
             <?php $form = ActiveForm::begin(); ?>
             <h1><?= Html::encode($this->title) . " " ?></h1>
 

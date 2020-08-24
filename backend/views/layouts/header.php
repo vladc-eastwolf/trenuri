@@ -45,7 +45,7 @@ $this->title = 'Trains Administration';
                         <?php
                         echo Dropdown::widget([
                             'items' => [
-                                ['label' => 'Mails', 'url' => ['']],
+                                ['label' => 'Mails', 'url' => ['contact/index']],
 
 
                             ]

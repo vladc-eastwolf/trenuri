@@ -7,11 +7,11 @@ use yii\helpers\Html;
 
 ?>
     <div class="verify-email">
-        <p>Hello </p>
-        <p>Thank you for your registration1234.</p>
-        <p>To complete it follow the link below to verify your email and activate your account:</p>
+        <p>Hello, </p>
+        <p>Your purchase is complete.</p>
+        <p>We've attached below your ticket and all the information you need to know. </p>
 
 
-        <p>If the person who did the registration is not you, ignore this e-mail and contact your e-mail support. </p>
+        <p>Now, all you need to do is to show the QR code to the Train Administrator and you are done.</p>
     </div>
 <?php

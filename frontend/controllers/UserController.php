@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use frontend\models\Discount;
 use yii\base\InvalidArgumentException;
 use yii\filters\AccessControl;
 use frontend\models\EmailResetRequestForm;
@@ -33,30 +34,59 @@ class UserController extends \yii\web\Controller
         ];
     }
 
+    public function actionSendVerify($type)
+    {
+        $model=new Discount();
+
+        return $this->render('send-verify',[
+            'type'=>$type,
+            'model'=>$model
+        ]);
+    }
+
+    public function actionVerify()
+    {
+        $model = new Discount();
+
+        if ($model->load(Yii::$app->request->post())) {
+
+            return $this->redirect(['send-verify',
+                'type' => $model->discount_type,
+            ]);
+        }
+
+        return $this->render('verify', [
+            'model' => $model
+        ]);
+    }
+
 
     public function actionProfile($id)
     {
         $model = User::findOne($id);
-        if(!$model->image_id){
-            $model2=new Image();
-            $old_image=NULL;
-        }else{
-            $model2=Image::findOne(['user_id'=>$id]);
-            $old_image=$model2->name;
+        if (!$model->image_id) {
+            $model2 = new Image();
+            $old_image = NULL;
+        } else {
+            $model2 = Image::findOne(['user_id' => $id]);
+            $old_image = $model2->name;
         }
-        if($model->load(Yii::$app->request->post()) && $model->save()){
-            if(UploadedFile::getInstance($model,'imageFile')){
-                $model2->user_id=$id;
-                $image=UploadedFile::getInstance($model,'imageFile');
-                if(!empty($image) && $image->size !==0){
-                    unlink(Yii::getAlias('@uploads') . '/' . $model2->name . '.' . $model2->extension);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if (UploadedFile::getInstance($model, 'imageFile')) {
+                $model2->user_id = $id;
+                $image = UploadedFile::getInstance($model, 'imageFile');
+                if (!empty($image) && $image->size !== 0) {
+                    if ($old_image) {
+                        unlink(Yii::getAlias('@uploads') . '/' . $model2->name . '.' . $model2->extension);
+                    }
                     $model2->extension = $image->extension;
                     $model2->size = $image->size;
+                    $model2->save();
                     $model2->name = 'image' . $model2->id;
                     $image->saveAs(Yii::getAlias('@uploads') . '/image' . $model2->id . '.' . $image->extension);
                     $model2->mime_type = FileHelper::getMimeType(Yii::getAlias('@uploads') . '/' . $model2->name . '.' . $model2->extension);
-                }else{
-                    $model2->name=$old_image;
+                } else {
+                    $model2->name = $old_image;
                 }
                 $model2->save();
                 $model->image_id = $model2->id;
@@ -127,5 +157,6 @@ class UserController extends \yii\web\Controller
             'model' => $model,
         ]);
     }
+
 
 }

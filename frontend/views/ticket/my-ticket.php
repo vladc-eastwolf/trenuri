@@ -73,7 +73,7 @@ $this->title = 'Ticket Details';
                         <span style="color: #00b1b1; font-size: 12px;">******* Price: </span>
                         <span style="color: black"><?= $ticket->price . 'Lei' ?></span>
                          <br>
-                         <span style="float:right"><?= Html::a('Download Pdf', ['gen-pdf', 'id' => $ticket->id]) ?></span>
+                         <span style="float:right"><?= Html::a('Download Pdf', ['show-pdf', 'id' => $ticket->id,'user_id'=>Yii::$app->user->getId()]) ?></span>
                     </span>
 
                 </div>

@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use frontend\models\Contact;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -29,10 +30,10 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup', 'resend-verification-email', 'reset-password','request-password-reset'],
+                'only' => ['logout', 'signup', 'resend-verification-email', 'reset-password', 'request-password-reset'],
                 'rules' => [
                     [
-                        'actions' => ['signup', 'login', 'resend-verification-email', 'reset-password','request-password-reset'],
+                        'actions' => ['signup', 'login', 'resend-verification-email', 'reset-password', 'request-password-reset'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -106,14 +107,19 @@ class SiteController extends Controller
     public function actionContact()
     {
         $model = new ContactForm();
+        $contact = new Contact();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
+            $contact->email = $model->email;
+            $contact->body = $model->body;
+            $contact->name = $model->name;
+            $contact->subject = $model->subject;
+            if ($model->sendEmail() && $contact->save()) {
                 Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
             } else {
                 Yii::$app->session->setFlash('error', 'There was an error sending your message.');
             }
 
-            return $this->refresh();
+            return $this->redirect(['train/index']);
         } else {
             return $this->render('contact', [
                 'model' => $model,

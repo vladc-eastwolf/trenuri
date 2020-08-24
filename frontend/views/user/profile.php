@@ -10,9 +10,26 @@ use yii\bootstrap\Modal;
 $this->title='Profile';
 ?>
 
+
 <div class="container">
     <div class="row">
         <div class="col-lg-7 col-md-push-3 ">
+            <?php if (Yii::$app->session->hasFlash('success')): ?>
+                <div class="alert alert-success alert-dismissable">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                    <h4><i class="icon fa fa-check"></i>Saved!</h4>
+                    <?= Yii::$app->session->getFlash('success') ?>
+                </div>
+            <?php endif; ?>
+
+
+            <?php if (Yii::$app->session->hasFlash('error')): ?>
+                <div class="alert alert-danger alert-dismissable">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                    <h4><i class="icon fa fa-check"></i>Error!</h4>
+                    <?= Yii::$app->session->getFlash('error') ?>
+                </div>
+            <?php endif; ?>
             <h1><?= Html::encode($this->title) . ' '?><small style="font-size: 20px"> only you and train administrator can see your profile. </small></h1>
             <hr class="colorgraph">
             <div class="panel panel-default">
@@ -42,8 +59,8 @@ $this->title='Profile';
 
                             </div>
                             <div class="col-sm-6">
-                                <h4 style="color:#00b1b1; text-transform: capitalize "><?= $model->firstname . ' ' . $model->lastname ?> </h4></span>
-                                <span><p>Student</p></span>
+                                <h4 style="color:black; text-transform: capitalize "><?= $model->firstname . ' ' . $model->lastname ?> </h4></span>
+                                <span><p><?= Html::a('I want discount.', ['user/verify'], ['class' => '']) ?></p></span>
                             </div>
                             <div class="clearfix"></div>
                             <hr style="margin:5px 0 5px 0;">

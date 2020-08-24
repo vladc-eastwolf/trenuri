@@ -28,7 +28,9 @@
         "wbraganca/yii2-dynamicform": "dev-master",
         "kartik-v/yii2-grid": "dev-master",
         "kartik-v/yii2-mpdf": "dev-master",
-        "mpdf/mpdf": "^8.0"
+        "mpdf/mpdf": "^8.0",
+        "fedemotta/yii2-cronjob": "*",
+        "omnilight/yii2-scheduling": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

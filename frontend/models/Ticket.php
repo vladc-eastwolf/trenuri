@@ -82,16 +82,17 @@ class Ticket extends \yii\db\ActiveRecord
         ];
     }
 
-    public function sendTicket(){
+    public function sendTicket($mpdf){
         return Yii::$app
             ->mailer
             ->compose(
                 ['html' => 'ticketVerify-html', 'text' => 'ticketVerify-text'],
                 ['user' => $this->name]
             )
-            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . 'Ticket robot'])
+            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . 'Your ticket'])
             ->setTo($this->email)
             ->setSubject('Your ticket ' . Yii::$app->name)
+            ->attachContent($mpdf)
             ->send();
     }
 

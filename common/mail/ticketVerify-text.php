@@ -4,8 +4,10 @@
 /* @var $user common\models\User */
 
 ?>
-    Hello,
-    Thank you for your registration1234.
-    To complete it follow the link below to verify your email and activate your account:
+Hello
+Your purchase is complete.
+We've attached below your ticket and all the information you need to know.
 
-    If the person who did the registration is not you, ignore this e-mail and contact your e-mail support.
+
+Now, all you need to do is to show the QR code to the Train Administrator and you are done.
+
