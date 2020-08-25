@@ -8,17 +8,19 @@ use Yii;
  * This is the model class for table "discount".
  *
  * @property int $id
- * @property string $name
- * @property string $size
- * @property string $extension
- * @property string $mine_type
  * @property int $user_id
- * @property string|null $student
- * @property string|null $schoolboy
- * @property string|null $retired
- * @property string $send_at
+ * @property int|null $student
+ * @property int|null $schoolboy
+ * @property int|null $retired
+ * @property string|null $identity_card
+ * @property int|null $size
+ * @property string|null $extension
+ * @property string|null $mime_type
+ * @property string|null $created_at
  *
  * @property User $user
+ * @property SchoolboyLicense[] $schoolboyLicenses
+ * @property StudentLicense[] $studentLicenses
  */
 class Discount extends \yii\db\ActiveRecord
 {
@@ -29,10 +31,11 @@ class Discount extends \yii\db\ActiveRecord
     {
         return 'discount';
     }
-    public $discount_type;
+
     public $imageFile1;
     public $imageFile2;
     public $imageFile3;
+    public $discount_type;
 
     /**
      * {@inheritdoc}
@@ -40,10 +43,11 @@ class Discount extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'size', 'extension', 'mine_type', 'user_id'], 'required'],
-            [['user_id'], 'integer'],
-            [['send_at'], 'safe'],
-            [['name', 'size', 'extension', 'mine_type', 'student', 'schoolboy', 'retired','discount_type'], 'string', 'max' => 45],
+            [['user_id'], 'required'],
+            [['user_id', 'student', 'schoolboy', 'retired', 'size'], 'integer'],
+            [['imageFile1', 'imageFile2', 'imageFile3'], 'file', 'extensions' => 'png, jpg'],
+            [['created_at'], 'safe'],
+            [['identity_card', 'extension', 'mime_type', 'discount_type'], 'string', 'max' => 45],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -55,15 +59,15 @@ class Discount extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'size' => 'Size',
-            'extension' => 'Extension',
-            'mine_type' => 'Mine Type',
             'user_id' => 'User ID',
             'student' => 'Student',
             'schoolboy' => 'Schoolboy',
             'retired' => 'Retired',
-            'send_at' => 'Send At',
+            'identity_card' => 'Identity Card',
+            'size' => 'Size',
+            'extension' => 'Extension',
+            'mime_type' => 'Mime Type',
+            'created_at' => 'Created At',
         ];
     }
 
@@ -75,5 +79,25 @@ class Discount extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    /**
+     * Gets query for [[SchoolboyLicenses]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSchoolboyLicenses()
+    {
+        return $this->hasMany(SchoolboyLicense::className(), ['discount_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[StudentLicenses]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStudentLicenses()
+    {
+        return $this->hasMany(StudentLicense::className(), ['discount_id' => 'id']);
     }
 }

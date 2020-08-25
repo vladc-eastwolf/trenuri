@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use frontend\models\Discount;
+use frontend\models\StudentLicense;
 use yii\base\InvalidArgumentException;
 use yii\filters\AccessControl;
 use frontend\models\EmailResetRequestForm;
@@ -36,11 +37,50 @@ class UserController extends \yii\web\Controller
 
     public function actionSendVerify($type)
     {
-        $model=new Discount();
+        $model = new Discount();
+        if ($model->load(Yii::$app->request->post())) {
+            if ($type == 'student') {
+                $model->student = 1;
+                $student = new StudentLicense();
+                if (UploadedFile::getInstance($model, 'imageFile1')) {
+                    if (UploadedFile::getInstance($model, 'imageFile2')) {
+                        if (UploadedFile::getInstance($model, 'imageFile3')) {
+                            $model->user_id = Yii::$app->user->getId();
+                            $image1 = UploadedFile::getInstance($model, 'imageFile1');
+                            $image2 = UploadedFile::getInstance($model, 'imageFile2');
+                            $image3 = UploadedFile::getInstance($model, 'imageFile3');
 
-        return $this->render('send-verify',[
-            'type'=>$type,
-            'model'=>$model
+                            if (!empty($image1) && !empty($image2) && !empty($image3)) {
+                                $model->identity_card = 'id' . Yii::$app->user->getId();
+                                $model->size = $image1->size;
+                                $model->extension = $image1->extension;
+                                $image1->saveAs(Yii::getAlias('@uploads/identity_card') . '/id' . Yii::$app->user->getId() . '.' . $image1->extension);
+                                $model->mime_type = FileHelper::getMimeType(Yii::getAlias('@uploads/identity_card') . '/' . $model->identity_card . '.' . $model->extension);
+                                $model->save();
+                                $student->license_front = 'front' . Yii::$app->user->getId() . '.' . $image2->extension;
+                                $student->license_back = 'back' . Yii::$app->user->getId() . '.' . $image3->extension;
+                                $student->discount_id=$model->id;
+                                $image2->saveAs(Yii::getAlias('@uploads/student_license') . '/front' . Yii::$app->user->getId() . '.' . $image2->extension);
+                                $image3->saveAs(Yii::getAlias('@uploads/student_license') . '/back' . Yii::$app->user->getId() . '.' . $image2->extension);
+                                $student->save();
+
+
+                            }
+
+                        }
+
+                    }
+                }
+            }
+
+            return $this->redirect(['profile',
+                'id' => Yii::$app->user->getId()
+            ]);
+        }
+
+        return $this->render('send-verify', [
+            'type' => $type,
+            'model' => $model
         ]);
     }
 
