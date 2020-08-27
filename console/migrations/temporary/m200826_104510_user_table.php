@@ -2,17 +2,17 @@
 
 use yii\db\Migration;
 
-class m130524_201442_init extends Migration
+/**
+ * Class m200826_104510_user_table
+ */
+class m200826_104510_user_table extends Migration
 {
+    /**
+     * {@inheritdoc}
+     */
     public function safeUp()
     {
-        $tableOptions = null;
-        if ($this->db->driverName === 'mysql') {
-            // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
-            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
-        }
-
-        $this->createTable('{{%user}}', [
+        $this->createTable('{{%user1}}', [
             'id' => $this->primaryKey(),
             'auth_key' => $this->string(32)->notNull(),
             'firstname' => $this->string()->notNull(),
@@ -27,12 +27,34 @@ class m130524_201442_init extends Migration
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
             'verification_token' => $this->string()->defaultValue(null)
-        ], $tableOptions);
+        ]);
+//        $this->addForeignKey('fk_user_image','user1','image_id','image1','id','no action','no action');
+
+
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function safeDown()
     {
+//        $this->dropForeignKey('fk_user_image','user1');
+        $this->dropTable('{{user1}}');
 
-        $this->dropTable('{{%user}}');
     }
+
+    /*
+    // Use up()/down() to run migration code without a transaction.
+    public function up()
+    {
+
+    }
+
+    public function down()
+    {
+        echo "m200826_104510_user_table cannot be reverted.\n";
+
+        return false;
+    }
+    */
 }

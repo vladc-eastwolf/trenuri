@@ -10,9 +10,9 @@ use yii\widgets\ActiveForm;
 
 <div class="train-form">
     <?php $items = [
-        1 => 'IR',
-        2 => 'R',
-        3 => 'INTERNATIONAL'
+        'IR' => 'IR',
+        'R' => 'R',
+        'INTERNATIONAL' => 'INTERNATIONAL'
     ] ?>
     <?php $form = ActiveForm::begin(); ?>
 

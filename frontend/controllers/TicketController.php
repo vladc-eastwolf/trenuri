@@ -200,7 +200,6 @@ class TicketController extends \yii\web\Controller
                 $model->is_first_class = $fc;
                 $model->is_second_class = $sc;
 
-
                 if ($model->is_first_class) {
                     for ($i = $composition->seats_first_class; $i >= 1; $i--) {
                         $model->seat_reserved = $chistory2->seats_first_class - $i + 1;
@@ -216,12 +215,13 @@ class TicketController extends \yii\web\Controller
                         break;
                     }
                 }
-                $model->save();
+
                 if (!$model->save() && !$model->validate()) {
                     throw new Exception('Model could not be saved');
                 }
                 $transaction->commit();
                 Yii::info('All models saved');
+
 
 
                 if ($model->save()) {

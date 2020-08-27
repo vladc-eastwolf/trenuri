@@ -59,16 +59,13 @@ class UserController extends \yii\web\Controller
                                 $model->save();
                                 $student->license_front = 'front' . Yii::$app->user->getId() . '.' . $image2->extension;
                                 $student->license_back = 'back' . Yii::$app->user->getId() . '.' . $image3->extension;
-                                $student->discount_id=$model->id;
+                                $student->discount_id = $model->id;
                                 $image2->saveAs(Yii::getAlias('@uploads/student_license') . '/front' . Yii::$app->user->getId() . '.' . $image2->extension);
                                 $image3->saveAs(Yii::getAlias('@uploads/student_license') . '/back' . Yii::$app->user->getId() . '.' . $image2->extension);
                                 $student->save();
 
-
                             }
-
                         }
-
                     }
                 }
             }
