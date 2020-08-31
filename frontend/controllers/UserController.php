@@ -162,11 +162,11 @@ class UserController extends \yii\web\Controller
 
                             $model->identity_card_id = $id_card->id;
 
-                            $retired->name = 'notebook' . Yii::$app->user->getId();
+                            $retired->name = 'retired' . Yii::$app->user->getId();
                             $retired->size = $image2->size;
                             $retired->extension = $image2->extension;
-                            $image2->saveAs(Yii::getAlias('@uploads/notebook') . '/notebook' . Yii::$app->user->getId() . '.' . $image2->extension);
-                            $retired->mime_type = FileHelper::getMimeType(Yii::getAlias('@uploads/notebook') . '/' . $retired->name . '.' . $retired->extension);
+                            $image2->saveAs(Yii::getAlias('@uploads/retired') . '/retired' . Yii::$app->user->getId() . '.' . $image2->extension);
+                            $retired->mime_type = FileHelper::getMimeType(Yii::getAlias('@uploads/retired') . '/' . $retired->name . '.' . $retired->extension);
                             $retired->save();
 
                             $model->retired_id = $retired->id;
