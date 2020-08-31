@@ -1,11 +1,11 @@
 <?php
 
-namespace frontend\models;
+namespace backend\models;
 
 use Yii;
 
 /**
- * This is the model class for table "student_license".
+ * This is the model class for table "school_license".
  *
  * @property int $id
  * @property string $name
@@ -16,14 +16,14 @@ use Yii;
  *
  * @property Discount[] $discounts
  */
-class StudentLicense extends \yii\db\ActiveRecord
+class SchoolLicense extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'student_license';
+        return 'school_license';
     }
 
     /**
@@ -60,6 +60,6 @@ class StudentLicense extends \yii\db\ActiveRecord
      */
     public function getDiscounts()
     {
-        return $this->hasMany(Discount::className(), ['student_id' => 'id']);
+        return $this->hasMany(Discount::className(), ['school_id' => 'id']);
     }
 }

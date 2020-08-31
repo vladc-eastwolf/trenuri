@@ -60,7 +60,7 @@ $this->title='Profile';
                             </div>
                             <div class="col-sm-6">
                                 <h4 style="color:black; text-transform: capitalize "><?= $model->firstname . ' ' . $model->lastname ?> </h4></span>
-                                <span><p><?= Html::a('I want discount.', ['user/verify'], ['class' => '']) ?></p></span>
+                                <span><p><?= Html::a('I want discount.', ['user/discount'], ['class' => '']) ?></p></span>
                             </div>
                             <div class="clearfix"></div>
                             <hr style="margin:5px 0 5px 0;">

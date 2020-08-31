@@ -1,8 +1,10 @@
 <?php
 
-namespace frontend\models;
+namespace backend\models;
 
 use Yii;
+use frontend\models\User;
+
 
 /**
  * This is the model class for table "discount".
@@ -31,9 +33,6 @@ class Discount extends \yii\db\ActiveRecord
     {
         return 'discount';
     }
-    public $imageFile1;
-    public $imageFile2;
-    public $discount_type;
 
     /**
      * {@inheritdoc}
@@ -43,8 +42,6 @@ class Discount extends \yii\db\ActiveRecord
         return [
             [['user_id', 'identity_card_id', 'student_id', 'school_id', 'retired_id', 'status'], 'integer'],
             [['send_at'], 'safe'],
-            ['discount_type','string'],
-            [['imageFile1', 'imageFile2'], 'file', 'extensions' => 'png, jpg'],
             [['identity_card_id'], 'exist', 'skipOnError' => true, 'targetClass' => IdentityCard::className(), 'targetAttribute' => ['identity_card_id' => 'id']],
             [['retired_id'], 'exist', 'skipOnError' => true, 'targetClass' => RetiredLicense::className(), 'targetAttribute' => ['retired_id' => 'id']],
             [['school_id'], 'exist', 'skipOnError' => true, 'targetClass' => SchoolLicense::className(), 'targetAttribute' => ['school_id' => 'id']],

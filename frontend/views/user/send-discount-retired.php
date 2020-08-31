@@ -21,17 +21,12 @@ $this->title = 'Discount for'
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-6"  style="font-size: 17px; color: #00b1b1">Student License(Front) Photo</div>
+                <div class="col-lg-6"  style="font-size: 17px; color: #00b1b1">Retired License Photo</div>
                 <div class="col-lg-6">
                     <?= $form->field($model, 'imageFile2', ['inputOptions' => ['']])->fileInput()->label(false) ?>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-6"  style="font-size: 17px; color: #00b1b1">Student License(Back) Photo</div>
-                <div class="col-lg-6">
-                    <?= $form->field($model, 'imageFile3', ['inputOptions' => ['']])->fileInput()->label(false) ?>
-                </div>
-            </div>
+
             <hr class="colorgraph">
             <div class="row form-group">
                 <div class="col-xs-12 col-md-6"><?= Html::submitButton('Send', ['class' => 'btn btn-primary btn-block btn-lg']) ?></div>

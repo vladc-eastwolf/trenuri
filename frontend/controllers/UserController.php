@@ -3,6 +3,9 @@
 namespace frontend\controllers;
 
 use frontend\models\Discount;
+use frontend\models\IdentityCard;
+use frontend\models\RetiredLicense;
+use frontend\models\SchoolLicense;
 use frontend\models\StudentLicense;
 use yii\base\InvalidArgumentException;
 use yii\filters\AccessControl;
@@ -35,36 +38,42 @@ class UserController extends \yii\web\Controller
         ];
     }
 
-    public function actionSendVerify($type)
+    public function actionSendDiscountStudent($type)
     {
         $model = new Discount();
         if ($model->load(Yii::$app->request->post())) {
             if ($type == 'student') {
-                $model->student = 1;
                 $student = new StudentLicense();
+                $id_card = new IdentityCard();
                 if (UploadedFile::getInstance($model, 'imageFile1')) {
                     if (UploadedFile::getInstance($model, 'imageFile2')) {
-                        if (UploadedFile::getInstance($model, 'imageFile3')) {
-                            $model->user_id = Yii::$app->user->getId();
-                            $image1 = UploadedFile::getInstance($model, 'imageFile1');
-                            $image2 = UploadedFile::getInstance($model, 'imageFile2');
-                            $image3 = UploadedFile::getInstance($model, 'imageFile3');
+                        $model->user_id = Yii::$app->user->getId();
+                        $image1 = UploadedFile::getInstance($model, 'imageFile1');
+                        $image2 = UploadedFile::getInstance($model, 'imageFile2');
 
-                            if (!empty($image1) && !empty($image2) && !empty($image3)) {
-                                $model->identity_card = 'id' . Yii::$app->user->getId();
-                                $model->size = $image1->size;
-                                $model->extension = $image1->extension;
-                                $image1->saveAs(Yii::getAlias('@uploads/identity_card') . '/id' . Yii::$app->user->getId() . '.' . $image1->extension);
-                                $model->mime_type = FileHelper::getMimeType(Yii::getAlias('@uploads/identity_card') . '/' . $model->identity_card . '.' . $model->extension);
-                                $model->save();
-                                $student->license_front = 'front' . Yii::$app->user->getId() . '.' . $image2->extension;
-                                $student->license_back = 'back' . Yii::$app->user->getId() . '.' . $image3->extension;
-                                $student->discount_id = $model->id;
-                                $image2->saveAs(Yii::getAlias('@uploads/student_license') . '/front' . Yii::$app->user->getId() . '.' . $image2->extension);
-                                $image3->saveAs(Yii::getAlias('@uploads/student_license') . '/back' . Yii::$app->user->getId() . '.' . $image2->extension);
-                                $student->save();
+                        if (!empty($image1) && !empty($image2)) {
+                            $id_card->name = 'id' . Yii::$app->user->getId();
+                            $id_card->size = $image1->size;
+                            $id_card->extension = $image1->extension;
+                            $image1->saveAs(Yii::getAlias('@uploads/identity_card') . '/id' . Yii::$app->user->getId() . '.' . $image1->extension);
+                            $id_card->mime_type = FileHelper::getMimeType(Yii::getAlias('@uploads/identity_card') . '/' . $id_card->name . '.' . $id_card->extension);
+                            $id_card->save();
 
-                            }
+                            $model->identity_card_id = $id_card->id;
+
+                            $student->name = 'stud_lic' . Yii::$app->user->getId();
+                            $student->size = $image2->size;
+                            $student->extension = $image2->extension;
+                            $image2->saveAs(Yii::getAlias('@uploads/student_license') . '/stud_lic' . Yii::$app->user->getId() . '.' . $image2->extension);
+                            $student->mime_type = FileHelper::getMimeType(Yii::getAlias('@uploads/student_license') . '/' . $student->name . '.' . $student->extension);
+                            $student->save();
+
+                            $model->student_id = $student->id;
+
+                            $model->save();
+
+                            $student->save();
+
                         }
                     }
                 }
@@ -75,24 +84,132 @@ class UserController extends \yii\web\Controller
             ]);
         }
 
-        return $this->render('send-verify', [
+        return $this->render('send-discount-student', ['type' => $type,
+            'model' => $model]);
+    }
+
+    public function actionSendDiscountSchool($type)
+    {
+        $model = new Discount();
+        if ($model->load(Yii::$app->request->post())) {
+            if ($type == 'schoolboy') {
+                $school = new SchoolLicense();
+                $id_card = new IdentityCard();
+                if (UploadedFile::getInstance($model, 'imageFile1')) {
+                    if (UploadedFile::getInstance($model, 'imageFile2')) {
+                        $model->user_id = Yii::$app->user->getId();
+                        $image1 = UploadedFile::getInstance($model, 'imageFile1');
+                        $image2 = UploadedFile::getInstance($model, 'imageFile2');
+
+                        if (!empty($image1) && !empty($image2)) {
+                            $id_card->name = 'id' . Yii::$app->user->getId();
+                            $id_card->size = $image1->size;
+                            $id_card->extension = $image1->extension;
+                            $image1->saveAs(Yii::getAlias('@uploads/identity_card') . '/id' . Yii::$app->user->getId() . '.' . $image1->extension);
+                            $id_card->mime_type = FileHelper::getMimeType(Yii::getAlias('@uploads/identity_card') . '/' . $id_card->name . '.' . $id_card->extension);
+                            $id_card->save();
+
+                            $model->identity_card_id = $id_card->id;
+
+                            $school->name = 'notebook' . Yii::$app->user->getId();
+                            $school->size = $image2->size;
+                            $school->extension = $image2->extension;
+                            $image2->saveAs(Yii::getAlias('@uploads/notebook') . '/notebook' . Yii::$app->user->getId() . '.' . $image2->extension);
+                            $school->mime_type = FileHelper::getMimeType(Yii::getAlias('@uploads/notebook') . '/' . $school->name . '.' . $school->extension);
+                            $school->save();
+
+                            $model->school_id = $school->id;
+
+                            $model->save();
+
+                            $school->save();
+
+                        }
+                    }
+                }
+            }
+
+            return $this->redirect(['profile',
+                'id' => Yii::$app->user->getId()
+            ]);
+        }
+        return $this->render('send-discount-school', [
             'type' => $type,
-            'model' => $model
+            'model'=>$model
         ]);
     }
 
-    public function actionVerify()
+    public function actionSendDiscountRetired($type)
+    {
+        $model = new Discount();
+        if ($model->load(Yii::$app->request->post())) {
+            if ($type == 'retired') {
+                $retired = new RetiredLicense();
+                $id_card = new IdentityCard();
+                if (UploadedFile::getInstance($model, 'imageFile1')) {
+                    if (UploadedFile::getInstance($model, 'imageFile2')) {
+                        $model->user_id = Yii::$app->user->getId();
+                        $image1 = UploadedFile::getInstance($model, 'imageFile1');
+                        $image2 = UploadedFile::getInstance($model, 'imageFile2');
+
+                        if (!empty($image1) && !empty($image2)) {
+                            $id_card->name = 'id' . Yii::$app->user->getId();
+                            $id_card->size = $image1->size;
+                            $id_card->extension = $image1->extension;
+                            $image1->saveAs(Yii::getAlias('@uploads/identity_card') . '/id' . Yii::$app->user->getId() . '.' . $image1->extension);
+                            $id_card->mime_type = FileHelper::getMimeType(Yii::getAlias('@uploads/identity_card') . '/' . $id_card->name . '.' . $id_card->extension);
+                            $id_card->save();
+
+                            $model->identity_card_id = $id_card->id;
+
+                            $retired->name = 'notebook' . Yii::$app->user->getId();
+                            $retired->size = $image2->size;
+                            $retired->extension = $image2->extension;
+                            $image2->saveAs(Yii::getAlias('@uploads/notebook') . '/notebook' . Yii::$app->user->getId() . '.' . $image2->extension);
+                            $retired->mime_type = FileHelper::getMimeType(Yii::getAlias('@uploads/notebook') . '/' . $retired->name . '.' . $retired->extension);
+                            $retired->save();
+
+                            $model->retired_id = $retired->id;
+                            $model->save();
+
+                            $retired->save();
+
+                        }
+                    }
+                }
+            }
+
+            return $this->redirect(['profile',
+                'id' => Yii::$app->user->getId()
+            ]);
+        }
+        return $this->render('send-discount-retired', [
+            'type' => $type,
+            'model'=>$model
+        ]);
+    }
+
+    public function actionDiscount()
     {
         $model = new Discount();
 
         if ($model->load(Yii::$app->request->post())) {
-
-            return $this->redirect(['send-verify',
-                'type' => $model->discount_type,
-            ]);
+            if ($model->discount_type == 'student') {
+                return $this->redirect(['send-discount-student',
+                    'type' => $model->discount_type,
+                ]);
+            } else if ($model->discount_type == 'schoolboy') {
+                return $this->redirect(['send-discount-school',
+                    'type' => $model->discount_type,
+                ]);
+            }else if($model->discount_type == 'retired'){
+                return $this->redirect(['send-discount-retired',
+                    'type' => $model->discount_type,
+                ]);
+            }
         }
 
-        return $this->render('verify', [
+        return $this->render('discount', [
             'model' => $model
         ]);
     }
