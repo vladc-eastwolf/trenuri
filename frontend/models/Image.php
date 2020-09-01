@@ -10,9 +10,9 @@ use Yii;
  *
  * @property int $id
  * @property string $name
- * @property int $size
- * @property string $extension
- * @property string $mime_type
+ * @property int|null $size
+ * @property string|null $extension
+ * @property string|null $mime_type
  * @property int $user_id
  * @property string $created_at
  * @property User $user

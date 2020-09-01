@@ -7,7 +7,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\bootstrap\Modal;
 
-$this->title='Profile';
+$this->title = 'Profile';
 ?>
 
 
@@ -30,7 +30,8 @@ $this->title='Profile';
                     <?= Yii::$app->session->getFlash('error') ?>
                 </div>
             <?php endif; ?>
-            <h1><?= Html::encode($this->title) . ' '?><small style="font-size: 20px"> only you and train administrator can see your profile. </small></h1>
+            <h1><?= Html::encode($this->title) . ' ' ?><small style="font-size: 20px"> only you and train administrator
+                    can see your profile. </small></h1>
             <hr class="colorgraph">
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -60,14 +61,21 @@ $this->title='Profile';
                             </div>
                             <div class="col-sm-6">
                                 <h4 style="color:black; text-transform: capitalize "><?= $model->firstname . ' ' . $model->lastname ?> </h4></span>
-                                <span><p><?= Html::a('I want discount.', ['user/discount'], ['class' => '']) ?></p></span>
+                                <?php if (($model->discount) && ($model->discount !== 'waiting')) { ?>
+                                    <span><p>You are: <?= $model->discount ?></p></span>
+                                <?php } else if ($model->discount == 'waiting') { ?>
+                                    <span style="color: #00b1b1"><p>Your request is being processed.</p></span>
+                                <?php } else { ?>
+                                    <span><p><?= Html::a('I want discount.', ['user/discount'], ['class' => '']) ?></p></span>
+                                <?php } ?>
                             </div>
                             <div class="clearfix"></div>
                             <hr style="margin:5px 0 5px 0;">
 
 
                             <div class="col-sm-5 col-xs-6 tital ">First Name:</div>
-                            <div class="col-sm-7 col-xs-6" style="text-transform: capitalize"><?= $model->firstname ?></div>
+                            <div class="col-sm-7 col-xs-6"
+                                 style="text-transform: capitalize"><?= $model->firstname ?></div>
 
                             <div class="clearfix"></div>
                             <div class="bot-border"></div>
@@ -79,9 +87,7 @@ $this->title='Profile';
 
 
                             <div class="col-sm-5 col-xs-6 tital ">Email:</div>
-                            <div class="col-sm-7"><?= $model->email . " "; ?><a
-                                        href="<?= Url::to(['/user/request-email-reset']) ?>"
-                                        class="glyphicon glyphicon-pencil"></a></div>
+                            <div class="col-sm-7"><?= $model->email; ?></div>
 
                             <div class="clearfix"></div>
                             <div class="bot-border"></div>
@@ -106,7 +112,6 @@ $this->title='Profile';
                                 ]);
 
                                 ActiveForm::begin();
-                                echo $form->field($model, 'oldPassword', ['inputOptions' => ['placeholder' => 'Old Password', 'class' => 'form-control input-lg']])->passwordInput(['autofocus' => true, 'required' => true])->label(false);
                                 echo $form->field($model, 'newPassword', ['inputOptions' => ['placeholder' => 'New Password', 'class' => 'form-control input-lg']])->passwordInput(['required' => true, 'maxlength' => 15, 'minlength' => '6'])->label(false);
                                 echo $form->field($model, 'confirmNewPassword', ['inputOptions' => ['placeholder' => 'New Password', 'class' => 'form-control input-lg']])->passwordInput(['required' => true])->label(false);
                                 echo Html::submitButton('Update', ['class' => 'btn btn-success btn-block btn-lg']);

@@ -18,11 +18,15 @@ use Yii;
  * @property string $lastname
  * @property string $phone
  * @property int $status
+ * @property string|null $discount
  * @property int|null $image_id
  * @property string $imageFile
  * @property int $created_at
  * @property int $updated_at
  * @property string|null $verification_token
+ *
+ * @property Discount[] $discounts
+ * @property Ticket[] $tickets
  */
 class User extends \yii\db\ActiveRecord
 {
@@ -34,7 +38,6 @@ class User extends \yii\db\ActiveRecord
         return 'user';
     }
     public $imageFile;
-    public $oldPassword;
     public $newPassword;
     public $confirmNewPassword;
 
@@ -48,7 +51,7 @@ class User extends \yii\db\ActiveRecord
             [['status', 'created_at', 'updated_at','image_id'], 'integer'],
             [['imageFile'], 'file', 'extensions' => 'png, jpg'],
             [['auth_key'], 'string', 'max' => 32],
-            [['password_hash', 'password_reset_token','email_reset_token', 'email', 'firstname', 'lastname', 'phone', 'verification_token','oldPassword'], 'string', 'max' => 255],
+            [['password_hash', 'password_reset_token','email_reset_token', 'email', 'firstname', 'lastname', 'phone', 'verification_token','discount'], 'string', 'max' => 255],
             [['email'], 'unique'],
             [['password_reset_token','email_reset_token'], 'unique'],
             ['newPassword', 'string', 'min' => 6],
@@ -75,11 +78,20 @@ class User extends \yii\db\ActiveRecord
             'phone' => 'Phone',
             'image_id'=>'Image Id',
             'status' => 'Status',
+            'discount' => 'Discount',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'verification_token' => 'Verification Token',
             'imageFile'=>'Image File'
         ];
+    }
+    public function getDiscounts()
+    {
+        return $this->hasMany(Discount::className(), ['user_id' => 'id']);
+    }
+    public function getTickets()
+    {
+        return $this->hasMany(Ticket::className(), ['user_id' => 'id']);
     }
     public function getImage()
     {

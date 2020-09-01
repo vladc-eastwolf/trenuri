@@ -30,6 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'identity_card_id',
                 'format' => 'raw',
+                'label' => 'Identity Card',
                 'value' => function ($model) {
                     if ($model->identity_card_id) {
                         if ($model->identityCard->status == 9) {
@@ -49,6 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'student_id',
                 'format' => 'raw',
+                'label' => 'Student License',
                 'value' => function ($model) {
                     if ($model->student_id) {
                         if ($model->student->status == 9) {
@@ -67,10 +69,11 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'school_id',
                 'format' => 'raw',
+                'label' => 'School License',
                 'value' => function ($model) {
                     if ($model->school_id) {
                         if($model->school->status == 9){
-                            return Html::a('Check photos', ['/school-license/view', '' => '']);
+                            return Html::a('Check photos', ['/school-license/view', 'id' => $model->school->id]);
                         }else
                             return 'Checked';
 
@@ -85,10 +88,11 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'retired_id',
                 'format' => 'raw',
+                'label' => 'Retired License',
                 'value' => function ($model) {
                     if ($model->retired_id) {
                         if($model->retired->status == 9){
-                            return Html::a('Check photo', ['/retired-license/view', '' => '']);
+                            return Html::a('Check photo', ['/retired-license/view', 'id' => $model->retired->id]);
                         }else{
                             return 'Checked';
                         }

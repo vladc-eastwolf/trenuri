@@ -4,6 +4,8 @@ namespace backend\controllers;
 
 use backend\models\Discount;
 use backend\models\IdentityCard;
+use backend\models\RetiredLicense;
+use backend\models\SchoolLicense;
 use backend\models\StudentLicense;
 use yii\filters\AccessControl;
 use Yii;
@@ -42,12 +44,36 @@ class ImageController extends \yii\web\Controller
             }
         }
     }
-    public function actionBackOpen($discount_id)
+    public function actionSchoolOpen($id)
     {
-        if ($model = StudentLicense::findOne($discount_id)) {
-            $content1 = file_get_contents(Yii::getAlias('@uploads') . '/student_license/' . $model->license_back);
-            die($content1);
-
+        if ($model = SchoolLicense::findOne($id)) {
+            if (file_exists(Yii::getAlias('@uploads') . '/notebook/' . $model->name . '.' . $model->extension)) {
+                header('Content-Type: ' . $model->mime_type);
+                header('Content-Disposition: inline; filename="' . $model->name . '.' . $model->extension . '"');
+                $content = file_get_contents(Yii::getAlias('@uploads') . '/notebook/' . $model->name . '.' . $model->extension);
+                if ($model->size) $size = $model->size;
+                else $size = strlen($content);
+                if ($size) {
+                    header('Content-Length: ' . $size);
+                }
+                die($content);
+            }
+        }
+    }
+    public function actionRetiredOpen($id)
+    {
+        if ($model = RetiredLicense::findOne($id)) {
+            if (file_exists(Yii::getAlias('@uploads') . '/retired/' . $model->name . '.' . $model->extension)) {
+                header('Content-Type: ' . $model->mime_type);
+                header('Content-Disposition: inline; filename="' . $model->name . '.' . $model->extension . '"');
+                $content = file_get_contents(Yii::getAlias('@uploads') . '/retired/' . $model->name . '.' . $model->extension);
+                if ($model->size) $size = $model->size;
+                else $size = strlen($content);
+                if ($size) {
+                    header('Content-Length: ' . $size);
+                }
+                die($content);
+            }
         }
     }
     public function actionIdOpen($id)

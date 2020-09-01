@@ -4,7 +4,9 @@
 
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
-$this->title='Ticket Details:'
+use frontend\models\User;
+
+$this->title = 'Ticket Details:'
 ?>
 
 <div class="container">
@@ -17,7 +19,7 @@ $this->title='Ticket Details:'
                     <h4><?= "<span style='color: #1b6d85'>" . 'Plecarea pe data de: ' . "</span>" . $date ?>  </h4>
                 </div>
                 <div style="float: right">
-                    <h4> <?php echo '<span style="color: #1b6d85">To: </span>' .  $destination ?></h4>
+                    <h4> <?php echo '<span style="color: #1b6d85">To: </span>' . $destination ?></h4>
                 </div>
             </div>
             <hr class="colorgraph">
@@ -54,15 +56,31 @@ $this->title='Ticket Details:'
                             <hr style="border: 0;height: 1px;background: #333; background-image:  linear-gradient(to right, #ccc, #333, #ccc); ">
                             <?php
                             $items_seat = [
-                                1 => 'First class(chair)',
-                                2 => 'Second class(chair)',
+                                1 => 'First class',
+                                2 => 'Second class',
                             ];
-                            $items_ticket_type = [
-                                1 => 'Adult',
-                                2 => 'Student',
-                                3 => 'Schoolkid',
-                                4 => 'Retired'
-                            ]
+                            $user = User::findOne(['id' => Yii::$app->user->getId()]);
+                            if(Yii::$app->user->isGuest || $user->discount == 'waiting' || $user->discount==null){
+                                $items_ticket_type = [
+                                    1 => 'Full Price',
+                                ];
+                            }else if($user->discount == 'student'){
+                                $items_ticket_type = [
+                                    1 => 'Full Price',
+                                    2 => 'Student'
+                                ];
+                            }else if($user->discount == 'school'){
+                                $items_ticket_type = [
+                                    1 => 'Full Price',
+                                    2 => 'School'
+                                ];
+                            }else if($user->discount == 'retired'){
+                                $items_ticket_type = [
+                                    1 => 'Full Price',
+                                    2 => 'Retired'
+                                ];
+                            }
+
                             ?>
 
                             <div class="col-sm-5 col-xs-6 tital ">
