@@ -52,7 +52,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             }
                         }
                     },
-
+                    'contentOptions' => function ($model) {
+                        return ['style' => 'background-color:'
+                            . ($model->identityCard->status == 9
+                                ? '#DC143C' : '#32CD32')];
+                    }
 
                 ],
                 [
