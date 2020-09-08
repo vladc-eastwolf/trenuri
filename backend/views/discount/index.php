@@ -50,15 +50,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             } else {
                                 return 'Checked';
                             }
-                        }else{
-                            return null;
                         }
                     },
-                    'contentOptions' => function ($model) {
-                        return ['style' => 'background-color:'
-                            . ($model->identityCard->status == 9
-                                ? '#DC143C' : '#32CD32')];
-                    }
+
 
                 ],
                 [
