@@ -1,7 +1,7 @@
 <?php
 /* @var $this yii\web\View */
 ?>
-<h1>identity-card/delet</h1>
+<h1>image/delete</h1>
 
 <p>
     You may change the content of this page by modifying

@@ -15,7 +15,7 @@ use Yii;
  * @property string|null $update_time
  * @property int|null $operator_id
  * @property string|null $description
- *
+ * @property int|null $trip_id
  * @property Operator $operator
  * @property Train $train
  * @property CompositionHistory[] $compositionHistories
@@ -37,12 +37,13 @@ class Composition extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['train_id', 'seats_first_class', 'seats_second_class', 'additional_capacity', 'operator_id'], 'integer'],
+            [['train_id', 'seats_first_class', 'seats_second_class', 'additional_capacity', 'operator_id','trip_id'], 'integer'],
             [['train_id', 'operator_id'], 'required'],
             [['update_time'], 'safe'],
             [['description'], 'string', 'max' => 45],
             [['operator_id'], 'exist', 'skipOnError' => true, 'targetClass' => Operator::className(), 'targetAttribute' => ['operator_id' => 'id']],
             [['train_id'], 'exist', 'skipOnError' => true, 'targetClass' => Train::className(), 'targetAttribute' => ['train_id' => 'id']],
+            [['trip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Trip::className(), 'targetAttribute' => ['trip_id' => 'id']],
         ];
     }
 
@@ -60,6 +61,7 @@ class Composition extends \yii\db\ActiveRecord
             'update_time' => 'Update Time',
             'operator_id' => 'Operator ID',
             'description' => 'Description',
+            'trip_id' => 'Trip ID',
         ];
     }
 
@@ -100,5 +102,9 @@ class Composition extends \yii\db\ActiveRecord
     public function getOperates()
     {
         return $this->hasMany(Operates::className(), ['composition_id' => 'id']);
+    }
+    public function getTrip()
+    {
+        return $this->hasOne(Trip::className(), ['id' => 'trip_id']);
     }
 }

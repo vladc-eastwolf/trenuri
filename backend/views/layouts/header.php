@@ -45,9 +45,15 @@ $this->title = 'Trains Administration';
                         <?php
                         echo Dropdown::widget([
                             'items' => [
+                                ['label' => 'Users', 'url' => ['user/index']],
+                                ['label' => 'Admins', 'url' => ['admin/index']],
                                 ['label' => 'Mails', 'url' => ['contact/index']],
                                 ['label' => 'Discounts', 'url' => ['discount/index']],
-
+                                ['label' => 'Profile Images', 'url' => ['image/index']],
+                                ['label' => 'Identity Cards', 'url' => ['identity-card/index']],
+                                ['label' => 'Student License', 'url' => ['student-license/index']],
+                                ['label' => 'School License', 'url' => ['school-license/index']],
+                                ['label' => 'Retired License', 'url' => ['retired-license/index']],
 
                             ]
                         ]) ?>

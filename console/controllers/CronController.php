@@ -2,6 +2,7 @@
 
 namespace console\controllers;
 
+use backend\models\Operates;
 use frontend\models\Composition;
 use frontend\models\CompositionHistory;
 use frontend\models\Discount;
@@ -41,7 +42,7 @@ class CronController extends Controller
                 $user = User::findOne(['id' => $discount->user_id]);
                 if ($discount->identityCard->status == 10 && !empty($discount->student_id) && $discount->student->status == 10) {
                     $user->discount = 'student';
-                } else if ($discount->identityCard->status == 10 && !empty($discount->school_id)  && $discount->school->status == 10) {
+                } else if ($discount->identityCard->status == 10 && !empty($discount->school_id) && $discount->school->status == 10) {
                     $user->discount = 'school';
                 } else if ($discount->identityCard->status == 10 && !empty($discount->retired_id) && $discount->retired->status == 10) {
                     $user->discount = 'retired';
@@ -56,7 +57,17 @@ class CronController extends Controller
 
         $compositions = Composition::find()->all();
         foreach ($compositions as $comp) {
-            $chistory = CompositionHistory::findAll(['train_id' => $comp->train_id]);
+            $operates = Operates::find()->where(['composition_id' => $comp->id])->andWhere(['trip_id' => $comp->trip_id])->all();
+            foreach ($operates as $op) {
+                if (strtotime($op->date_to) < strtotime(date('H:i:s'))) {
+                    echo date('H:i:s');
+                    $chistory = CompositionHistory::findOne(['composition_id' => $comp->id, 'train_id' => $comp->train_id]);
+                    $comp->seats_first_class = $chistory->seats_first_class;
+                    $comp->seats_second_class = $chistory->seats_second_class;
+                    $comp->additional_capacity = $chistory->additional_capacity;
+                    $comp->save();
+                }
+            }
         }
 
     }

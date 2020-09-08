@@ -2,21 +2,27 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\helpers\ArrayHelper;
-use backend\models\Location;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\Station */
+/* @var $model backend\models\Image */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="station-form">
+<div class="image-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?=$form->field($model,'location_id')->dropDownList(ArrayHelper::map(Location::find()->asArray()->all(),'id','name'),['prompt'=>'Choose the Location'])->label('Location') ?>
+    <?= $form->field($model, 'size')->textInput() ?>
+
+    <?= $form->field($model, 'extension')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'mime_type')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'user_id')->textInput() ?>
+
+    <?= $form->field($model, 'created_at')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

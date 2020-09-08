@@ -3,9 +3,11 @@
 namespace backend\controllers;
 
 use backend\models\Discount;
+use backend\models\SchoolLicenseSearch;
 use Yii;
 use backend\models\SchoolLicense;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -21,13 +23,35 @@ class SchoolLicenseController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['index', 'view', 'delete', 'bulk'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'bulk' => ['POST']
                 ],
             ],
         ];
+    }
+
+    public function actionIndex()
+    {
+        $searchModel = new SchoolLicenseSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     public function actionView($id)
@@ -49,6 +73,17 @@ class SchoolLicenseController extends Controller
     {
         $this->findModel($id)->delete();
 
+        return $this->redirect(['index']);
+    }
+
+    public function actionBulk()
+    {
+        $selection = (array)Yii::$app->request->post('selection');
+        foreach ($selection as $id) {
+            $model = $this->findModel($id);
+            $this->findModel($id)->delete();
+            unlink(Yii::getAlias('@uploads') . '/notebook/' . $model->name . '.' . $model->extension);
+        }
         return $this->redirect(['index']);
     }
 

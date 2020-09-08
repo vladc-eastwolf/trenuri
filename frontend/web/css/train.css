@@ -3,6 +3,7 @@
     cursor: pointer;
     padding: 25px;
     width: auto;
+    height: 350px;
     border-radius: 20px
 
 }
@@ -14,6 +15,7 @@
 .content {
     width: auto;
     padding: 20px;
+    height: 350px;
     background-color: #DCDCDC;
     display:none;
     border-bottom-left-radius: 25px;

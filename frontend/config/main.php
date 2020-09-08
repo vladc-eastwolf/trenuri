@@ -10,6 +10,7 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'name'=>'Trains',
+    'timeZone' => 'Europe/Bucharest',
     'controllerNamespace' => 'frontend\controllers',
     'defaultRoute' => 'train/index',
     'modules' => [

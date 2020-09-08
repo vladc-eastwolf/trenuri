@@ -3,18 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\IdentityCard;
-use backend\models\IdentityCardSearch;
-use yii\filters\AccessControl;
+use backend\models\Admin;
+use backend\models\AdminSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use backend\models\Discount;
 
 /**
- * IdentityCardController implements the CRUD actions for IdentityCard model.
+ * AdminController implements the CRUD actions for Admin model.
  */
-class IdentityCardController extends Controller
+class AdminController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -22,33 +20,22 @@ class IdentityCardController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'actions' => ['index','view', 'delete', 'bulk'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
-                    'bulk' => ['POST']
                 ],
             ],
         ];
     }
 
     /**
-     * Lists all IdentityCard models.
+     * Lists all Admin models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new IdentityCardSearch();
+        $searchModel = new AdminSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -58,27 +45,60 @@ class IdentityCardController extends Controller
     }
 
     /**
-     * Displays a single IdentityCard model.
+     * Displays a single Admin model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-        $model = $this->findModel($id);
-        $discount = Discount::findOne(['identity_card_id' => $id]);
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $discount->status = $discount->status + 1;
-            $discount->save();
-            return $this->redirect(['discount/index']);
-        }
         return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    /**
+     * Creates a new Admin model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreate()
+    {
+        $model = new Admin();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model->password_hash = Yii::$app->security->generatePasswordHash($model->password_hash);
+            $model->save();
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('create', [
             'model' => $model,
         ]);
     }
 
     /**
-     * Deletes an existing IdentityCard model.
+     * Updates an existing Admin model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Deletes an existing Admin model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -90,26 +110,17 @@ class IdentityCardController extends Controller
 
         return $this->redirect(['index']);
     }
-    public function actionBulk(){
-        $selection = (array)Yii::$app->request->post('selection');
-        foreach ($selection as $id) {
-            $model = $this->findModel($id);
-            $this->findModel($id)->delete();
-            unlink(Yii::getAlias('@uploads') . '/identity_card/' . $model->name . '.' . $model->extension);
-        }
-        return $this->redirect(['index']);
-    }
 
     /**
-     * Finds the IdentityCard model based on its primary key value.
+     * Finds the Admin model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return IdentityCard the loaded model
+     * @return Admin the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = IdentityCard::findOne($id)) !== null) {
+        if (($model = Admin::findOne($id)) !== null) {
             return $model;
         }
 

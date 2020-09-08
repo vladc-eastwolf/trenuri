@@ -5,6 +5,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use backend\models\Operator;
+use backend\models\Trip;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Composition */
@@ -25,6 +26,7 @@ use backend\models\Operator;
 
     <?= $form->field($model, 'operator_id')->dropDownList(ArrayHelper::map(Operator::find()->asArray()->all(), 'id', 'name'), ['prompt' => 'Select Operator'])->label('Operator') ?>
 
+    <?= $form->field($model, 'trip_id')->dropDownList(ArrayHelper::map(Trip::find()->asArray()->all(), 'id', 'id'), ['prompt' => 'Select Trip'])->label('Trip') ?>
 
     <?= $form->field($model, 'description')->textarea(['maxlength' => true]) ?>
 

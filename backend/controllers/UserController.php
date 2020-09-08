@@ -2,20 +2,19 @@
 
 namespace backend\controllers;
 
-use backend\models\Discount;
-use backend\models\RetiredLicenseSearch;
+use backend\models\Image;
 use Yii;
-use backend\models\RetiredLicense;
-use yii\data\ActiveDataProvider;
+use backend\models\User;
+use backend\models\UserSearch;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * RetiredLicenseController implements the CRUD actions for RetiredLicense model.
+ * UserController implements the CRUD actions for User model.
  */
-class RetiredLicenseController extends Controller
+class UserController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -27,7 +26,7 @@ class RetiredLicenseController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index', 'view', 'delete', 'bulk'],
+                        'actions' => ['index', 'view', 'update', 'delete', 'bulk'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -45,7 +44,7 @@ class RetiredLicenseController extends Controller
 
     public function actionIndex()
     {
-        $searchModel = new RetiredLicenseSearch();
+        $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -56,21 +55,19 @@ class RetiredLicenseController extends Controller
 
     public function actionView($id)
     {
-        $model = $this->findModel($id);
-        $discount = Discount::findOne(['retired_id' => $id]);
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $discount->status = $discount->status + 1;
-            $discount->save();
-            return $this->redirect(['discount/index']);
-        }
         return $this->render('view', [
-            'model' => $model,
+            'model' => $this->findModel($id),
         ]);
     }
 
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $user=$this->findModel($id);
+        if($user->image_id){
+            $image=Image::findOne($user->image_id);
+            unlink(Yii::getAlias('@uploads') . '/' . $image->name . '.' . $image->extension);
+        }
+        $user->delete();
 
         return $this->redirect(['index']);
     }
@@ -79,16 +76,19 @@ class RetiredLicenseController extends Controller
     {
         $selection = (array)Yii::$app->request->post('selection');
         foreach ($selection as $id) {
-            $model = $this->findModel($id);
-            $this->findModel($id)->delete();
-            unlink(Yii::getAlias('@uploads') . '/retired/' . $model->name . '.' . $model->extension);
+            $user=$this->findModel($id);
+            if($user->image_id){
+                $image=Image::findOne($user->image_id);
+                unlink(Yii::getAlias('@uploads') . '/' . $image->name . '.' . $image->extension);
+            }
+            $user->delete();
         }
         return $this->redirect(['index']);
     }
 
     protected function findModel($id)
     {
-        if (($model = RetiredLicense::findOne($id)) !== null) {
+        if (($model = User::findOne($id)) !== null) {
             return $model;
         }
 

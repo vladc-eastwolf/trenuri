@@ -47,6 +47,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         return $model->train->type . $model->train->number;
                     }
                 ],
+                'trip_id',
+
                 'seats_first_class',
                 'seats_second_class',
                 'additional_capacity',
@@ -65,6 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'template' => '{update}',
                     'options' => ['style' => 'width:30px']
                 ],
+
             ],
         ]); ?>
 

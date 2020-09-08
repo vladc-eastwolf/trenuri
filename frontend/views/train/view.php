@@ -5,6 +5,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 ?>
+
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
@@ -12,6 +13,7 @@ use yii\helpers\Url;
                 <div style="float: left">
                     <h2><?php echo $origin ?></h2>
                     <h4><?= "<span style='color: #1b6d85'>" . 'Plecarea pe data de: ' . "</span>" . $date ?>  </h4>
+
                 </div>
                 <div style="float: right">
                     <h2> <?php echo $destination; ?></h2>
@@ -25,6 +27,7 @@ use yii\helpers\Url;
                             <div style="float: left; color: #707070">
                                 <?= $origin . "<br>"; ?>
                                 <?= $trip->departure_time . "<br>"; ?>
+
                             </div>
                             <div style="float:right; color: #707070">
                                 <?= $destination . "<br>"; ?>
@@ -32,10 +35,15 @@ use yii\helpers\Url;
                             </div>
                             <div style="top: 10%; left: 50%; right: 50%;transform: translate(22%, 10%)">
                                 <?php
-                                $distance=0;
+                                $distance = 0;
+
+                                if (strtotime($trip->departure_time) < strtotime(date('H:i:m'))) { ?>
+                                    <span style="color: firebrick">Not Available</span><br>
+                                <?php }
+
                                 for ($j = 0; $j < sizeof($lista); $j++) {
                                     foreach ($lista[$j] as $list) {
-                                        $distance=$distance+$list->distance;
+                                        $distance = $distance + $list->distance;
                                     }
                                 }
                                 ?>
@@ -88,20 +96,22 @@ use yii\helpers\Url;
                             </div>
                             <br>
                             <div class="float-left">
-                                <?= Html::a('<span class="glyphicon glyphicon-usd"></span><span style="font-family: Arial; text-align: center; margin: auto;">Tickets</span>',
-                                    ['/ticket/index',
-                                        'train_id' => $trip->train_id,
-                                        'operator_id' => $trip->line->operator_id,
-                                        'departure_time' => $trip->departure_time,
-                                        'arrival_time' => $trip->arrival_time,
-                                        'origin' => $origin,
-                                        'destination' => $destination,
-                                        'distance'=>$distance,
-                                        'date'=>$date,
-                                    ], [
-                                        'class' => 'btn btn-primary',
-                                        'style' => ['width' => '100px', 'border-radius' => '15px'],
-                                    ]) ?>
+                                <?php if (strtotime($trip->departure_time) > strtotime(date('H:i:m'))) { ?>
+                                    <?= Html::a('<span class="glyphicon glyphicon-usd"></span><span style="font-family: Arial; text-align: center; margin: auto;">Tickets</span>',
+                                        ['/ticket/index',
+                                            'train_id' => $trip->train_id,
+                                            'operator_id' => $trip->line->operator_id,
+                                            'departure_time' => $trip->departure_time,
+                                            'arrival_time' => $trip->arrival_time,
+                                            'origin' => $origin,
+                                            'destination' => $destination,
+                                            'distance' => $distance,
+                                            'date' => $date,
+                                        ], [
+                                            'class' => 'btn btn-primary',
+                                            'style' => ['width' => '100px', 'border-radius' => '15px'],
+                                        ]) ?>
+                                <?php } ?>
                                 <?= Html::button('<span class="glyphicon glyphicon-map-marker"></span><span style="font-family: Arial">Map</span>', [
                                     'class' => 'btn btn-success',
                                     'style' => ['width' => '75px', 'border-radius' => '15px'],

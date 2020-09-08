@@ -47,6 +47,7 @@ $this->title = 'Train Routes';
                     ],
                     'size' => 'lg',
 
+
                 ])
                 ?>
             </div>
@@ -56,7 +57,7 @@ $this->title = 'Train Routes';
                     'data' => $data,
                     'options' => [
                         'placeholder' => 'To',
-                       
+
                     ],
                     'size' => 'lg',
                 ])
@@ -68,7 +69,10 @@ $this->title = 'Train Routes';
                     'options' => ['placeholder' => 'When'],
                     'size' => 'lg',
                     'pluginOptions' => [
-                        'format' => 'yyyy-mm-dd'
+                        'format' => 'yyyy-m-d',
+                        'startDate' => date('yyyy-m-d'),
+                        'todayHighlight' => true,
+                        'minDate' => 0,
                     ]
                 ]);
                 ?>
