@@ -50,6 +50,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             } else {
                                 return 'Checked';
                             }
+                        }else{
+                            return null;
                         }
                     },
                     'contentOptions' => function ($model) {
