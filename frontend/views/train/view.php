@@ -6,6 +6,7 @@ use yii\helpers\Url;
 
 ?>
 
+
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
@@ -33,12 +34,16 @@ use yii\helpers\Url;
                                 <?= $destination . "<br>"; ?>
                                 <?= $trip->arrival_time . "<br>"; ?>
                             </div>
-                            <div style="top: 10%; left: 50%; right: 50%;transform: translate(22%, 10%)">
+
+                            <div style="top: 5%; left: 50%; right: 50%;transform: translate(22%, 10%)">
                                 <?php
                                 $distance = 0;
+                                $timp_total=$date . ' ' . $trip->departure_time;
 
-                                if (strtotime($trip->departure_time) < strtotime(date('H:i:m'))) { ?>
-                                    <span style="color: firebrick">Not Available</span><br>
+                                if (strtotime($timp_total)<strtotime(date('yy-m-d H:i:s'))) { ?>
+
+                                    <span style="color: firebrick;">Not Available</span><br>
+
                                 <?php }
 
                                 for ($j = 0; $j < sizeof($lista); $j++) {
@@ -62,7 +67,7 @@ use yii\helpers\Url;
                                     echo $time . " " . "Minutes-" . $distance . ' KM' . "<br>";
                                 }
                                 ?>
-                                <?= 'Operator:' . " " . $trip->line->operator->name . "<br>"; ?>
+                                <span><?= 'Operator:' . " " . $trip->line->operator->name . "<br>"; ?></span>
                                 <div style="top: 10%; left: 45%; right: 50%;transform: translate(17.4%, 10%)">
                                     <?php for ($x = 0;
                                     $x < sizeof($trenuri);
@@ -75,9 +80,10 @@ use yii\helpers\Url;
                                         }
                                         } ?>
                                 </div>
+
                             </div>
                         </div>
-                        <div class="content" style="height: 175px;margin-top:-18px">
+                        <div class="content" style="height: 175px;margin-top:-15px">
                             <div class="row">
                                 <?php for ($j = 0; $j < sizeof($lista); $j++) { ?>
                                     <?php foreach ($lista[$j] as $list) { ?>
@@ -96,7 +102,8 @@ use yii\helpers\Url;
                             </div>
                             <br>
                             <div class="float-left">
-                                <?php if (strtotime($trip->departure_time) > strtotime(date('H:i:m'))) { ?>
+                                <?php if (strtotime($timp_total)>strtotime(date('yy-m-d H:i:s'))) { ?>
+
                                     <?= Html::a('<span class="glyphicon glyphicon-usd"></span><span style="font-family: Arial; text-align: center; margin: auto;">Tickets</span>',
                                         ['/ticket/index',
                                             'train_id' => $trip->train_id,

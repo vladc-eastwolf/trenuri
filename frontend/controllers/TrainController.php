@@ -34,7 +34,7 @@ class TrainController extends \yii\web\Controller
         $model3=[];
         if ($model) {
             foreach ($model as $id) {
-                $model2[] = Trip::find()->where(['train_id' => $id->id])->orderBy(['departure_time'=>SORT_ASC])->all();
+                $model2[] = Trip::find()->where(['train_id' => $id->id])->all();
             }
             for ($i=0; $i<sizeof($model2);$i++){
                 foreach($model2[$i] as $trip){

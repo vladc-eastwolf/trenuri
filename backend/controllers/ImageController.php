@@ -60,8 +60,9 @@ class ImageController extends \yii\web\Controller
     public function actionDelete($id)
     {
 
-        $this->findModel($id)->delete();
-
+        $model=$this->findModel($id);
+        unlink(Yii::getAlias('@uploads') . '/' . $model->name . '.' . $model->extension);
+        $model->delete();
 
         return $this->redirect(['index']);
     }

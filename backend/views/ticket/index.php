@@ -16,10 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <h1><?= Html::encode($this->title) ?></h1>
 
-        <div style="padding-bottom: 50px">
-            <div style="float:left">
-                <?= Html::a('Create Ticket', ['create'], ['class' => 'btn btn-success']) ?>
-            </div>
+        <div style="padding-bottom: 20px">
             <div style="float:right">
                 <?= Html::submitButton('Delete', [
                     'class' => 'btn btn-danger',

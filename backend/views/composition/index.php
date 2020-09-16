@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'filterModel' => $searchModel,
             'columns' => [
                 [
-                    'class' => 'yii\grid\SerialColumn',
+                    'attribute'=>'id',
                     'options' => ['style' => 'width:30px']
                 ],
                 [

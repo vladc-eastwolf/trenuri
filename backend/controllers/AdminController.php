@@ -43,6 +43,14 @@ class AdminController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+    public function actionProfile($id)
+    {
+        $model=$this->findModel($id);
+        return $this->render('profile',[
+            'id'=>Yii::$app->user->getId(),
+            'model'=>$model
+        ]);
+    }
 
     /**
      * Displays a single Admin model.

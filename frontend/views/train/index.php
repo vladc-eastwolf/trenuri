@@ -71,6 +71,7 @@ $this->title = 'Train Routes';
                     'pluginOptions' => [
                         'format' => 'yyyy-m-d',
                         'startDate' => date('yyyy-m-d'),
+                        'endDate' => date('yyyy-m-d',strtotime('+ 7 days')),
                         'todayHighlight' => true,
                         'minDate' => 0,
                     ]

@@ -6,6 +6,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use backend\models\Trip;
+use kartik\time\TimePicker;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Operates */
@@ -20,19 +21,29 @@ use backend\models\Trip;
 
     <?= $form->field($model, 'trip_id')->dropDownList(ArrayHelper::map(Trip::find()->asArray()->all(), 'id', 'id'), ['prompt' => 'Select Trip'])->label('Trip') ?>
 
-    <?= $form->field($model, 'date_from')->widget(DatePicker::className(),[
-        'options' => ['placeholder' => 'Date From'],
-        'pluginOptions' => [
-            'autoclose'=>true
-        ]
-    ]) ?>
+    <?= $form->field($model, 'date_from')->widget(TimePicker::className(),
+        [
+            'options' => ['placeholder' => 'Arrival At'],
+            'pluginOptions' => [
+                'showMeridian' => false,
+                'minuteStep' => 1,
+                'defaultTime' => false,
 
-    <?= $form->field($model, 'date_to')->widget(DatePicker::className(),[
-        'options' => ['placeholder' => 'Date To'],
-        'pluginOptions' => [
-            'autoclose'=>true
-        ]
-    ]) ?>
+            ]
+        ])
+    ?>
+
+    <?= $form->field($model, 'date_to')->widget(TimePicker::className(),
+        [
+            'options' => ['placeholder' => 'Arrival At'],
+            'pluginOptions' => [
+                'showMeridian' => false,
+                'minuteStep' => 1,
+                'defaultTime' => false,
+
+            ]
+        ])
+    ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

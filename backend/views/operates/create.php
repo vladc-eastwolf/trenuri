@@ -7,6 +7,7 @@ use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\time\TimePicker;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Operates */
@@ -32,25 +33,29 @@ $this->params['breadcrumbs'][] = $this->title;
             'data-toggle' => 'modal',
             'data-target' => '#your-modal',
         ])) ?>
-    <?= $form->field($model, 'date_from')->widget(\kartik\datetime\DateTimePicker::className(),[
-        'options' => ['placeholder' => 'Select when starts to operate'],
-        'layout' => '{picker}{input}{remove}',
-        'pluginOptions' => [
-            'autoclose' => true,
-            'format' => 'yyyy-mm-dd HH:ii',
-            'minuteStep' => 1,
-        ]
-    ]) ?>
+    <?= $form->field($model, 'date_from')->widget(TimePicker::className(),
+        [
+            'options' => ['placeholder' => 'Arrival At'],
+            'pluginOptions' => [
+                'showMeridian' => false,
+                'minuteStep' => 1,
+                'defaultTime' => false,
 
-    <?= $form->field($model, 'date_to')->widget(\kartik\datetime\DateTimePicker::className(),[
-        'options' => ['placeholder' => 'Select when stops to operate'],
-        'layout' => '{picker}{input}{remove}',
-        'pluginOptions' => [
-            'autoclose'=>true,
-            'format' => 'yyyy-mm-dd HH:ii',
-            'minuteStep' => 1,
-        ]
-    ]) ?>
+            ]
+        ])
+    ?>
+
+    <?= $form->field($model, 'date_to')->widget(TimePicker::className(),
+        [
+            'options' => ['placeholder' => 'Arrival At'],
+            'pluginOptions' => [
+                'showMeridian' => false,
+                'minuteStep' => 1,
+                'defaultTime' => false,
+
+            ]
+        ])
+    ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

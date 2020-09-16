@@ -34,27 +34,45 @@ $this->title = 'Trains Administration';
                             ['label' => 'Composition', 'url' => ['composition/index']],
                             ['label' => 'Composition-History', 'url' => ['composition-history/index']],
                             ['label' => 'Operates', 'url' => ['operates/index']],
-                            ['label' => 'Ticket', 'url' => ['ticket/index']],
+                            ['label' => 'Tickets', 'url' => ['ticket/index']],
 
                         ]
                     ]) ?>
                 </li>
                     <li class="dropdown">
-                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="font-family: Arial">Administration<b
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="font-family: Arial">Discounts<b
+                                    class="caret"></b></a>
+                        <?php
+                        echo Dropdown::widget([
+                            'items' => [
+                                ['label' => 'Discounts', 'url' => ['discount/index']],
+                                ['label' => 'Identity Cards', 'url' => ['identity-card/index']],
+                                ['label' => 'Student License', 'url' => ['student-license/index']],
+                                ['label' => 'School License', 'url' => ['school-license/index']],
+                                ['label' => 'Retired License', 'url' => ['retired-license/index']],
+
+                            ]
+                        ]) ?>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="font-family: Arial">Accounts<b
                                     class="caret"></b></a>
                         <?php
                         echo Dropdown::widget([
                             'items' => [
                                 ['label' => 'Users', 'url' => ['user/index']],
                                 ['label' => 'Admins', 'url' => ['admin/index']],
-                                ['label' => 'Mails', 'url' => ['contact/index']],
-                                ['label' => 'Discounts', 'url' => ['discount/index']],
                                 ['label' => 'Profile Images', 'url' => ['image/index']],
-                                ['label' => 'Identity Cards', 'url' => ['identity-card/index']],
-                                ['label' => 'Student License', 'url' => ['student-license/index']],
-                                ['label' => 'School License', 'url' => ['school-license/index']],
-                                ['label' => 'Retired License', 'url' => ['retired-license/index']],
-
+                            ]
+                        ]) ?>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="font-family: Arial">Contact<b
+                                    class="caret"></b></a>
+                        <?php
+                        echo Dropdown::widget([
+                            'items' => [
+                                ['label' => 'Mails', 'url' => ['contact/index']],
                             ]
                         ]) ?>
                     </li>
@@ -70,7 +88,7 @@ $this->title = 'Trains Administration';
                         echo Dropdown::widget([
                             'id' => 'dropdown',
                             'items' => [
-                                ['label' => 'Profile', 'url' => ['']],
+                                ['label' => 'Profile', 'url' => ['admin/profile','id'=>Yii::$app->user->getId()]],
                                 ['label' => 'Logout', 'url' => ['/site/logout'], 'linkOptions' => ['data-method' => 'post']],
                             ],
                         ]);

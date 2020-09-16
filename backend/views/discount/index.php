@@ -54,8 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'contentOptions' => function ($model) {
                         return ['style' => 'background-color:'
-                            . ($model->identityCard->status == 9
-                                ? '#DC143C' : '#32CD32')];
+                            . ((empty($model->identity_card_id) ? '#FFFFFF' : ($model->identity_card_id && $model->identityCard->status == 9 ? '#DC143C' : '#32CD32')))];
                     }
 
                 ],

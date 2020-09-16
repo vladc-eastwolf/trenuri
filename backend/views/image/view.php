@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Image */
@@ -16,7 +17,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -39,4 +39,5 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
+    <div style="padding-top: 15px"><?= Html::img(Url::to(['/image/profile-open', 'id' => $model->id]), ['style' => 'width:300px; height:300px']) ?></div>
 </div>

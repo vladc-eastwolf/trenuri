@@ -137,7 +137,7 @@ class TicketController extends \yii\web\Controller
                     'ticket' => $ticket,
                 ]);
             } else {
-            $pdf_content = $this->redirect(['show-pdf','id'=>$id,'user_id'=>Yii::$app->user->getId()]);
+                $pdf_content = $this->redirect(['show-pdf', 'id' => $id, 'user_id' => Yii::$app->user->getId()]);
             }
 
             $mpdf = new mpdf\Pdf([
@@ -153,13 +153,13 @@ class TicketController extends \yii\web\Controller
                 ],
             ]);
             return $mpdf->render();
-        }else{
+        } else {
             return $this->render('error');
         }
 
     }
 
-    public function actionCheckOut($id, $origin, $destination, $date, $price, $fc, $sc, $train_id, $departure_time, $arrival_time, $distance)
+    public function actionCheckOut($id, $origin, $destination, $date, $price, $fc, $sc, $train_id, $departure_time, $arrival_time, $distance, $trip_id)
     {
         $transaction = Yii::$app->db->beginTransaction();
 
@@ -167,7 +167,7 @@ class TicketController extends \yii\web\Controller
             $model = new Ticket();
             $model3 = Station::findOne(['name' => $origin]);
             $model4 = Station::findOne(['name' => $destination]);
-            $composition = Composition::findOne(['train_id' => $train_id]);
+            $composition = Composition::findOne(['train_id' => $train_id, 'trip_id' => $trip_id]);
             $chistory = new CompositionHistory();
 
             $chistory->composition_id = $composition->id;
@@ -223,7 +223,6 @@ class TicketController extends \yii\web\Controller
                 Yii::info('All models saved');
 
 
-
                 if ($model->save()) {
                     return $this->redirect(['gen-pdf',
                         'id' => $model->id,
@@ -247,7 +246,7 @@ class TicketController extends \yii\web\Controller
     public function actionIndex($train_id, $departure_time, $arrival_time, $origin, $destination, $distance, $date)
     {
         $trip = Trip::findOne(['train_id' => $train_id, 'departure_time' => $departure_time, 'arrival_time' => $arrival_time]);
-        $model2 = Composition::findOne(['train_id' => $train_id]);
+        $model2 = Composition::findOne(['train_id' => $train_id, 'trip_id' => $trip->id]);
         $model3 = new Composition();
         $price = null;
         $price1 = null;
@@ -448,7 +447,8 @@ class TicketController extends \yii\web\Controller
                     'train_id' => $train_id,
                     'departure_time' => $departure_time,
                     'arrival_time' => $arrival_time,
-                    'distance' => $distance
+                    'distance' => $distance,
+                    'trip_id' => $trip->id
 
                 ], ['class' => 'btn btn-primary']) . "</span>";
 

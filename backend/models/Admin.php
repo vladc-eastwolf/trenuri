@@ -27,6 +27,8 @@ class Admin extends \yii\db\ActiveRecord
     {
         return 'admin';
     }
+    public $newPassword;
+    public $confirmNewPassword;
 
     /**
      * {@inheritdoc}
@@ -38,6 +40,9 @@ class Admin extends \yii\db\ActiveRecord
             [['status'], 'integer'],
             [['created_at'], 'safe'],
             [['auth_key'], 'string', 'max' => 32],
+            ['newPassword', 'string', 'min' => 6],
+            ['confirmNewPassword', 'string', 'min' => 6],
+            ['confirmNewPassword','compare','compareAttribute'=>'newPassword'],
             [['firstname', 'lastname', 'phone', 'password_hash', 'password_reset_token', 'email'], 'string', 'max' => 255],
             [['email'], 'unique'],
             [['password_reset_token'], 'unique'],

@@ -9,11 +9,11 @@ $this->title = 'Check-Out';
 <div style="text-align: center">
     <h1><?= $this->title ?><small style="font-size: 20px"> please complete all the following fields. An email will be sent with all the informations you need:</small></h1>
 </div>
-<hr class="colorgraph" style="width: 1168px;">
+<hr class="colorgraph" style="width: 900px;">
 
 <div class="row">
 
-    <div class="container">
+    <div class="container" style="width: 900px; height: 550px">
         <div class="col-75">
 
             <?php $form = \yii\widgets\ActiveForm::begin() ?>
@@ -63,9 +63,9 @@ $this->title = 'Check-Out';
 
         </div>
     </div>
-    <hr class="colorgraph" style="width: 1168px;">
+    <hr class="colorgraph" style="width: 900px;">
     <div class="form-group">
-        <div class="col-lg-3" style="position: absolute; top:105%; left:10.5%">
+        <div class="col-lg-3" style="position: relative; top:105%; left:10.5%">
             <?= Html::submitButton('Submit', ['class' => 'btn btn-primary btn-block btn-lg']) ?>
         </div>
     </div>

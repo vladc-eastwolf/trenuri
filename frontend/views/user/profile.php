@@ -113,7 +113,7 @@ $this->title = 'Profile';
 
                                 ActiveForm::begin();
                                 echo $form->field($model, 'newPassword', ['inputOptions' => ['placeholder' => 'New Password', 'class' => 'form-control input-lg']])->passwordInput(['required' => true, 'maxlength' => 15, 'minlength' => '6'])->label(false);
-                                echo $form->field($model, 'confirmNewPassword', ['inputOptions' => ['placeholder' => 'New Password', 'class' => 'form-control input-lg']])->passwordInput(['required' => true])->label(false);
+                                echo $form->field($model, 'confirmNewPassword', ['inputOptions' => ['placeholder' => 'Confirm New Password', 'class' => 'form-control input-lg']])->passwordInput(['required' => true])->label(false);
                                 echo Html::submitButton('Update', ['class' => 'btn btn-success btn-block btn-lg']);
 
                                 ActiveForm::end();

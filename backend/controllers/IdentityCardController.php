@@ -95,6 +95,9 @@ class IdentityCardController extends Controller
         foreach ($selection as $id) {
             $model = $this->findModel($id);
             $this->findModel($id)->delete();
+            $discount=Discount::findOne(['identity_card_id'=>$model->id]);
+            $discount->identity_card_id=null;
+            $discount->save();
             unlink(Yii::getAlias('@uploads') . '/identity_card/' . $model->name . '.' . $model->extension);
         }
         return $this->redirect(['index']);
