@@ -43,12 +43,35 @@ class AdminController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+
     public function actionProfile($id)
     {
-        $model=$this->findModel($id);
-        return $this->render('profile',[
-            'id'=>Yii::$app->user->getId(),
-            'model'=>$model
+        $model = $this->findModel($id);
+        if ($model->load(Yii::$app->request->post())){
+            if ($model->newPassword) {
+                if ($model->newPassword == $model->confirmNewPassword) {
+                    $password = Yii::$app->security->generatePasswordHash($model->newPassword);
+                    $model->password_hash = $password;
+                    $model->save();
+                    return $this->refresh();
+                }
+            }
+        }
+        return $this->render('profile', [
+            'id' => Yii::$app->user->getId(),
+            'model' => $model
+        ]);
+    }
+
+    public function actionUpdateProfile($id)
+    {
+        $model = $this->findModel($id);
+        if($model->load(Yii::$app->request->post()) && $model->save()){
+            return $this->redirect(['profile','id'=>Yii::$app->user->getId()]);
+        }
+        return $this->render('update-profile', [
+            'id' => Yii::$app->user->getId(),
+            'model' => $model
         ]);
     }
 
